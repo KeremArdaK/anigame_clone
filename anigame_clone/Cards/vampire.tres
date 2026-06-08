@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://igb0xo7aj1fi"]
+
+[ext_resource type="Script" uid="uid://dieialnq8mc0f" path="res://Scripts/card_data.gd" id="1_kw4xa"]
+
+[resource]
+script = ExtResource("1_kw4xa")
+card_name = "Vampire"
+attack_damage = 15
+max_health = 75
+rarity = 1
+metadata/_custom_type_script = "uid://dieialnq8mc0f"

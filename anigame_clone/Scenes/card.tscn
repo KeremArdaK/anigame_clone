@@ -1,0 +1,81 @@
+[gd_scene format=3 uid="uid://c54bot8jsksf4"]
+
+[ext_resource type="Script" uid="uid://co83cvfq2te8e" path="res://Scenes/card.gd" id="1_brehn"]
+[ext_resource type="Resource" uid="uid://dsctr1jt8pt4p" path="res://Cards/morn.tres" id="2_e6po8"]
+[ext_resource type="Texture2D" uid="uid://cucsr60hq1x4m" path="res://Textures/cards/common_card_empty.png" id="2_eumee"]
+[ext_resource type="Texture2D" uid="uid://bd3rqvhnm1pap" path="res://icon.svg" id="3_e6po8"]
+
+[node name="Card" type="Control" unique_id=1024840541]
+custom_minimum_size = Vector2(400, 600)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 98.0
+offset_bottom = 141.0
+script = ExtResource("1_brehn")
+card_data = ExtResource("2_e6po8")
+
+[node name="CardTemplate" type="TextureRect" parent="." unique_id=1007298663]
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_eumee")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CardIllustration" type="TextureRect" parent="." unique_id=807152862]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 88.0
+offset_right = -10.0
+offset_bottom = -319.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_e6po8")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CardName" type="Label" parent="." unique_id=1903303836]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -2.0
+offset_top = -40.0
+offset_right = -2.0
+offset_bottom = -284.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1, 0.5)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 36
+text = "MORN"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StatsContainer" type="HBoxContainer" parent="." unique_id=1893248418]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 370.0
+offset_right = 368.0
+offset_bottom = 568.0
+
+[node name="AttackLbl" type="Label" parent="StatsContainer" unique_id=1049165866]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 36
+text = "10"
+
+[node name="HealthLbl" type="Label" parent="StatsContainer" unique_id=410249723]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 36
+text = "20"
+horizontal_alignment = 2

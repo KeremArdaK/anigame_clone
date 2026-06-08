@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://csaxm3q77webm"]
+
+[ext_resource type="Script" uid="uid://dieialnq8mc0f" path="res://Scripts/card_data.gd" id="1_mxcdv"]
+
+[resource]
+script = ExtResource("1_mxcdv")
+card_name = "Zombie"
+attack_damage = 40
+max_health = 5
+attack_type = 4
+rarity = 1
+metadata/_custom_type_script = "uid://dieialnq8mc0f"

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://bjbcyyn1o2mes"]
+
+[ext_resource type="Script" uid="uid://dieialnq8mc0f" path="res://Scripts/card_data.gd" id="1_q1qnh"]
+
+[resource]
+script = ExtResource("1_q1qnh")
+card_name = "Orc"
+attack_damage = 8
+max_health = 50
+attack_type = 2
+rarity = 1
+metadata/_custom_type_script = "uid://dieialnq8mc0f"

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://e0og6ahajw3l"]
+
+[ext_resource type="Script" uid="uid://dieialnq8mc0f" path="res://Scripts/card_data.gd" id="1_b5lc3"]
+
+[resource]
+script = ExtResource("1_b5lc3")
+card_name = "Slime"
+attack_damage = 1
+max_health = 250
+attack_type = 1
+rarity = 2
+metadata/_custom_type_script = "uid://dieialnq8mc0f"
