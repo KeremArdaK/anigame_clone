@@ -4,9 +4,9 @@
 
 [resource]
 script = ExtResource("1_eornx")
-name = "DamageBuff"
-description = "Bufffs your damage."
-effect_type = 4
+name = "Leech"
+description = "Heals you based on your damage on hit."
+effect_type = 3
 power = 25
 duration = 9999
 metadata/_custom_type_script = "uid://ghy0pniysv4f"

@@ -1,9 +1,20 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://csaxm3q77webm"]
 
 [ext_resource type="Script" uid="uid://dieialnq8mc0f" path="res://Scripts/card_data.gd" id="1_mxcdv"]
+[ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="1_ujken"]
+
+[sub_resource type="Resource" id="Resource_ujken"]
+script = ExtResource("1_ujken")
+name = "Poison"
+description = "Poisons enemy for 3 turns for X damage. Unlike burn, poison damage can not be healed."
+effect_type = 2
+power = 15
+duration = 3
+metadata/_custom_type_script = "uid://ghy0pniysv4f"
 
 [resource]
 script = ExtResource("1_mxcdv")
+on_hit_effects = Array[ExtResource("1_ujken")]([SubResource("Resource_ujken")])
 card_name = "Zombie"
 attack_damage = 40
 max_health = 5

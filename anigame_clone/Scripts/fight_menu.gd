@@ -62,6 +62,9 @@ func setup_initial_battlefield():
 	active_player_card.render_data(player_data)
 	current_player_hp = player_data.max_health
 	
+	player_active_effects.clear()
+	for effect in player_data.innate_effects:
+		player_active_effects.append(effect.duplicate())
 	spawn_new_enemy()
 	
 	add_log("[i]Ready to [color=red]FIGHT![/color][/i]")
@@ -74,7 +77,9 @@ func spawn_new_enemy():
 	active_enemy_card.render_data(enemy_data)
 	current_enemy_hp = enemy_data.max_health
 	
-	is_enemy_blinded = false
+	enemy_active_effects.clear()
+	for effect in enemy_data.innate_effects:
+		enemy_active_effects.append(effect.duplicate())
 	
 	add_log("\n[color=yellow]=== STAGE %d ===[/color]" % current_stage)
 	add_log("[color=red]New enemy %s spawned![/color]" % enemy_data.card_name)
@@ -159,6 +164,8 @@ func execute_player_turn():
 			player_side.get_child(0).update_health_ui(current_player_hp)
 			add_log("Leech healed [color=green]%d[/color] HP!" % hit_data["heal_amount"])
 
+		for effect in player_data.on_hit_effects:
+			add_effect_to_enemy(effect.duplicate())
 	# --- 3. Durak: Tur sonu efektleri (SADECE OYUNCU İÇİN) ---
 	current_player_hp = process_turn_end_effects(current_player_hp, player_active_effects, player_data.card_name)
 	
@@ -190,15 +197,29 @@ func apply_pre_attack_buffs(base_damage: int, attacker_effects: Array, defender_
 		if effects.effect_type == StatusEffect.Type.DEFENSE_BUFF:
 			var blocked_damage = (base_damage * effects.power) / 100
 			final_damage -= blocked_damage
+	return final_damage
 
 func process_turn_end_effects(target_hp: int, active_effects: Array[StatusEffect], target_name: String) -> int:
-	# Bu fonksiyon, her turun sonunda aktif olan durum etkilerini işler. Örneğin burn veya poison hasarı verir, buffların süresini azaltır vb.
 	var current_hp = target_hp
-	for effect in active_effects:
+	
+	# DİKKAT: Listeden eleman silerken çökmemesi için diziyi tersten (sondan başa) tarıyoruz!
+	for i in range(active_effects.size() - 1, -1, -1):
+		var effect = active_effects[i]
+		
+		# 1. Efektin özelliğini uygula (Zehir, Yanma vs.)
 		match effect.effect_type:
 			StatusEffect.Type.BURN, StatusEffect.Type.POISON:
 				current_hp -= effect.power
-				add_log("%s takes [color=orange]%d[/color] %s damage!" % [target_name, effect.power, effect.name])
+				add_log("🔥 %s takes [color=orange]%d[/color] %s damage!" % [target_name, effect.power, effect.name])
+				
+		# 2. Efektin süresini 1 tur azalt
+		effect.duration -= 1
+		
+		# 3. Eğer süresi bittiyse (0 veya altındaysa) onu sahneden sil
+		if effect.duration <= 0:
+			active_effects.remove_at(i)
+			add_log("⏳ [color=gray]The effect of %s on %s has worn off.[/color]" % [effect.name, target_name])
+			
 	return current_hp
 
 func check_blind_and_leech(attacker_effects: Array, attacker_name: String, base_damage: int) -> Dictionary:
