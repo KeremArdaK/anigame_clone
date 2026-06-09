@@ -7,5 +7,6 @@ script = ExtResource("1_kw4xa")
 card_name = "Vampire"
 attack_damage = 15
 max_health = 75
+attack_type = 1
 rarity = 1
 metadata/_custom_type_script = "uid://dieialnq8mc0f"

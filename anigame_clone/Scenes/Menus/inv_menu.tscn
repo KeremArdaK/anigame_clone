@@ -54,3 +54,4 @@ texture = ExtResource("1_apfpb")
 [node name="CardInfo" type="RichTextLabel" parent="MarginContainer/HBoxContainer/DetailsSide/VBoxContainer" unique_id=1267668683]
 layout_mode = 2
 size_flags_vertical = 3
+bbcode_enabled = true

@@ -7,6 +7,6 @@ script = ExtResource("1_b5lc3")
 card_name = "Slime"
 attack_damage = 1
 max_health = 250
-attack_type = 1
+attack_type = 2
 rarity = 2
 metadata/_custom_type_script = "uid://dieialnq8mc0f"

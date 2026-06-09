@@ -7,5 +7,6 @@ script = ExtResource("1_nhhm5")
 card_name = "Demon"
 attack_damage = 35
 max_health = 175
+attack_type = 1
 rarity = 2
 metadata/_custom_type_script = "uid://dieialnq8mc0f"

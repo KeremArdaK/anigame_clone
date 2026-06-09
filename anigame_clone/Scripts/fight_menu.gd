@@ -2,6 +2,9 @@ extends MarginContainer
 
 const CARD_SCENE = preload("res://Scenes/card.tscn")
 
+var player_active_effects: Array[StatusEffect] = []
+var enemy_active_effects: Array[StatusEffect] = []
+
 @onready var player_side: VBoxContainer = $HBoxContainer/PlayerSide
 @onready var enemy_side: VBoxContainer = $HBoxContainer/EnemySide
 @onready var fight_button: Button = $HBoxContainer/LogSide/FightButton
