@@ -2,6 +2,7 @@ extends MarginContainer
 
 const CARD_SCENE = preload("res://Scenes/card.tscn")
 
+#sahnede aktif olan kartlar ve durum etkileri
 var player_active_effects: Array[StatusEffect] = []
 var enemy_active_effects: Array[StatusEffect] = []
 
@@ -129,17 +130,39 @@ func start_battle_loop():
 		
 		await get_tree().create_timer(0.8).timeout
 
+func add_effect_to_enemy(effect: StatusEffect):
+	enemy_active_effects.append(effect)
+	add_log("Enemy is affected by [color=purple]%s![/color]" % effect.name)
+
+func add_effect_to_player(effect: StatusEffect):
+	player_active_effects.append(effect)
+	add_log("You are affected by [color=purple]%s![/color]" % effect.name)
+
 func execute_player_turn():
-	add_log("[color=blue]%s[/color] attacks!" % player_data.card_name)
+	add_log("\n[color=blue]%s[/color] attacks!" % player_data.card_name)
+
+	# --- 1. Durak: Saldırı öncesi buff/debufflar ---
+	var final_damage = apply_pre_attack_buffs(player_data.attack_damage, player_active_effects, enemy_active_effects)
+
+	# --- 2. Durak: Blind ve Leech kontrolü ---
+	var hit_data = check_blind_and_leech(player_active_effects, player_data.card_name, final_damage)
 	
-	if player_data.card_name.to_lower() == "morn":
-		if randf() <= 0.15:
-			is_enemy_blinded = true
-			add_log("[b]PASSIVE:[/b] Enemy is [color=purple]BLINDED![/color]")
-			
-	current_enemy_hp -= player_data.attack_damage
-	add_log("You dealt [color=orange]%d[/color] damage to the enemy!" % player_data.attack_damage)
-	enemy_side.get_child(0).update_health_ui(current_enemy_hp)
+	if hit_data["is_hit"]:
+		current_enemy_hp -= final_damage
+		enemy_side.get_child(0).update_health_ui(current_enemy_hp)
+		add_log("You dealt [color=orange]%d[/color] damage!" % final_damage)
+
+		# Can çalma varsa
+		if hit_data["heal_amount"] > 0:
+			current_player_hp += hit_data["heal_amount"]
+			current_player_hp = clamp(current_player_hp, 0, player_data.max_health)
+			player_side.get_child(0).update_health_ui(current_player_hp)
+			add_log("Leech healed [color=green]%d[/color] HP!" % hit_data["heal_amount"])
+
+	# --- 3. Durak: Tur sonu efektleri (SADECE OYUNCU İÇİN) ---
+	current_player_hp = process_turn_end_effects(current_player_hp, player_active_effects, player_data.card_name)
+	
+	player_side.get_child(0).update_health_ui(current_player_hp)
 
 func execute_enemy_turn():
 	if is_enemy_blinded:
@@ -155,3 +178,39 @@ func execute_enemy_turn():
 
 func update_ui():
 	stage_info.text = "Stage: %d" % current_stage
+
+func apply_pre_attack_buffs(base_damage: int, attacker_effects: Array, defender_effects: Array):
+	var final_damage = base_damage
+
+	for effects in attacker_effects:
+		if effects.effect_type == StatusEffect.Type.DAMAGE_BUFF:
+			var bonus_damage = (base_damage * effects.power) / 100
+			final_damage += bonus_damage
+	for effects in defender_effects:
+		if effects.effect_type == StatusEffect.Type.DEFENSE_BUFF:
+			var blocked_damage = (base_damage * effects.power) / 100
+			final_damage -= blocked_damage
+
+func process_turn_end_effects(target_hp: int, active_effects: Array[StatusEffect], target_name: String) -> int:
+	# Bu fonksiyon, her turun sonunda aktif olan durum etkilerini işler. Örneğin burn veya poison hasarı verir, buffların süresini azaltır vb.
+	var current_hp = target_hp
+	for effect in active_effects:
+		match effect.effect_type:
+			StatusEffect.Type.BURN, StatusEffect.Type.POISON:
+				current_hp -= effect.power
+				add_log("%s takes [color=orange]%d[/color] %s damage!" % [target_name, effect.power, effect.name])
+	return current_hp
+
+func check_blind_and_leech(attacker_effects: Array, attacker_name: String, base_damage: int) -> Dictionary:
+	var result = {"is_hit": true, "heal_amount": 0}
+
+	for effect in attacker_effects:
+		if effect.effect_type == StatusEffect.Type.BLIND:
+			if randi() %100 < effect.power:
+				add_log("%s is [color=red]BLINDED[/color] and missed the attack!" % attacker_name)
+				result["is_hit"] = false
+				return result
+		elif effect.effect_type == StatusEffect.Type.LEECH:
+			result["heal_amount"] = (base_damage * effect.power) / 100 
+			add_log("%s will LEECH [color=green]%d[/color] HP on hit!" % [attacker_name, result["heal_amount"]])
+	return result
