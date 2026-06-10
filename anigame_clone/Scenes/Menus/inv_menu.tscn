@@ -1,6 +1,0 @@
-[gd_scene format=3 uid="uid://b8ug7qnvn7gr8"]
-
-[sub_resource type="GDScript" id="GDScript_ddsdx"]
-
-[node name="CarouselContainer" type="Node2D" unique_id=1770105457]
-script = SubResource("GDScript_ddsdx")
