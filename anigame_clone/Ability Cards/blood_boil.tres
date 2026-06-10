@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ResourceCardData" format=3 uid="uid://nsjpib1ifvat"]
+
+[ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="1_5ybfk"]
+[ext_resource type="Resource" uid="uid://c7csbbsa6pksd" path="res://Status Effects/burn.tres" id="2_1360o"]
+[ext_resource type="Resource" uid="uid://b5qs7jgnaitnw" path="res://Status Effects/damage_buff.tres" id="3_6tve1"]
+[ext_resource type="Script" uid="uid://dpb8ctob5ni15" path="res://Scripts/resource_card_data.gd" id="4_x68ph"]
+
+[resource]
+script = ExtResource("4_x68ph")
+card_name = "Blood Boil"
+rarity = 1
+effects_to_apply = Array[ExtResource("1_5ybfk")]([ExtResource("2_1360o"), ExtResource("3_6tve1")])
+metadata/_custom_type_script = "uid://dpb8ctob5ni15"

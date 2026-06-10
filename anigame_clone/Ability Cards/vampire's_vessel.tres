@@ -1,0 +1,39 @@
+[gd_resource type="Resource" script_class="ResourceCardData" format=3 uid="uid://cu1nntudtuv2c"]
+
+[ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="1_njtrn"]
+[ext_resource type="Script" uid="uid://dpb8ctob5ni15" path="res://Scripts/resource_card_data.gd" id="2_r4bgy"]
+
+[sub_resource type="Resource" id="Resource_njtrn"]
+script = ExtResource("1_njtrn")
+name = "Leech"
+description = "Heals you based on your damage on hit."
+effect_type = 3
+power = 100
+duration = 9999
+metadata/_custom_type_script = "uid://ghy0pniysv4f"
+
+[sub_resource type="Resource" id="Resource_r4bgy"]
+script = ExtResource("1_njtrn")
+name = "Resurrection"
+description = "Resurrects you from death."
+effect_type = 6
+power = 90
+duration = 9999
+metadata/_custom_type_script = "uid://ghy0pniysv4f"
+
+[sub_resource type="Resource" id="Resource_ffnd1"]
+script = ExtResource("1_njtrn")
+name = "DamageBuff"
+description = "Bufffs your damage."
+effect_type = 4
+power = 50
+duration = 9999
+metadata/_custom_type_script = "uid://ghy0pniysv4f"
+
+[resource]
+script = ExtResource("2_r4bgy")
+card_name = "Vampire's Vessel"
+card_description = "%90 resurrection, %100 leech and %50 dmg buff."
+rarity = 3
+effects_to_apply = Array[ExtResource("1_njtrn")]([SubResource("Resource_njtrn"), SubResource("Resource_r4bgy"), SubResource("Resource_ffnd1")])
+metadata/_custom_type_script = "uid://dpb8ctob5ni15"

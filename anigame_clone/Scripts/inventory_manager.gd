@@ -1,13 +1,13 @@
 extends Node
 
-#envanterdeki bütün kartlar
-var owned_ability_cards = []
+# Envanterdeki bütün kartlar
+var owned_ability_cards: Array[ResourceCardData] = []
 
-#kuşanılan kartlar
-var equipped_ability_cards = []
+# Kuşanılan kartlar
+var equipped_ability_cards: Array[ResourceCardData] = []
 
-#ileride eşya ekleme ve çıkarma fonksiyonları eklenebilir, şimdiden hazırlığını yapalım
-var owned_items = []
+# İleride eşya ekleme için
+var owned_items: Array = []
 
 #başlangıçta kuşanma slotu sınırı(skill tree ile artacak)
 var max_equip_slots: int = 3

@@ -1,0 +1,59 @@
+[gd_scene format=3 uid="uid://rcl2kyft0fsd"]
+
+[ext_resource type="Texture2D" uid="uid://bd3rqvhnm1pap" path="res://icon.svg" id="1_rmv2f"]
+[ext_resource type="Script" uid="uid://c1ynldnd8kq2x" path="res://Scenes/Menus/shop_menu.gd" id="1_y6or0"]
+
+[node name="ShopMenu" type="Control" unique_id=1791199435]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_y6or0")
+
+[node name="CardTexture" type="TextureRect" parent="." unique_id=449251752]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -208.0
+offset_right = 64.0
+offset_bottom = -80.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_rmv2f")
+
+[node name="BuyButton" type="Button" parent="." unique_id=1201679984]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "BUY CARD PACK
+50 SHARDS"
+
+[node name="ResultLabel" type="Label" parent="." unique_id=346778072]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "LABEL"
+horizontal_alignment = 1

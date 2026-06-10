@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ResourceCardData" format=3 uid="uid://cb6kuxwo8qtlf"]
+
+[ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="1_dult5"]
+[ext_resource type="Resource" uid="uid://bukmaui24d5lp" path="res://Status Effects/defense_buff.tres" id="2_86bf5"]
+[ext_resource type="Resource" uid="uid://b5qs7jgnaitnw" path="res://Status Effects/damage_buff.tres" id="3_fkk5q"]
+[ext_resource type="Script" uid="uid://dpb8ctob5ni15" path="res://Scripts/resource_card_data.gd" id="4_5xir7"]
+
+[resource]
+script = ExtResource("4_5xir7")
+card_name = "Unbreakable Will"
+rarity = 1
+effects_to_apply = Array[ExtResource("1_dult5")]([ExtResource("2_86bf5"), ExtResource("3_fkk5q")])
+metadata/_custom_type_script = "uid://dpb8ctob5ni15"

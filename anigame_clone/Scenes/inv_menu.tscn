@@ -18,6 +18,9 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 
+[node name="Seperator" type="HSeparator" parent="VBoxContainer" unique_id=787349494]
+layout_mode = 2
+
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer" unique_id=112544716]
 unique_name_in_owner = true
 layout_mode = 2

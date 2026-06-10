@@ -1,0 +1,29 @@
+[gd_resource type="Resource" script_class="ResourceCardData" format=3 uid="uid://bj5banpp8dlw0"]
+
+[ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="1_eucmh"]
+[ext_resource type="Script" uid="uid://dpb8ctob5ni15" path="res://Scripts/resource_card_data.gd" id="2_70ep0"]
+
+[sub_resource type="Resource" id="Resource_lv2fc"]
+script = ExtResource("1_eucmh")
+name = "DefenseBuff"
+description = "Buffs your defense."
+effect_type = 5
+power = 20
+duration = 9999
+metadata/_custom_type_script = "uid://ghy0pniysv4f"
+
+[sub_resource type="Resource" id="Resource_8h4j1"]
+script = ExtResource("1_eucmh")
+name = "Leech"
+description = "Heals you based on your damage on hit."
+effect_type = 3
+power = 25
+duration = 9999
+metadata/_custom_type_script = "uid://ghy0pniysv4f"
+
+[resource]
+script = ExtResource("2_70ep0")
+card_name = "Siphoning Aura"
+rarity = 2
+effects_to_apply = Array[ExtResource("1_eucmh")]([SubResource("Resource_lv2fc"), SubResource("Resource_8h4j1")])
+metadata/_custom_type_script = "uid://dpb8ctob5ni15"

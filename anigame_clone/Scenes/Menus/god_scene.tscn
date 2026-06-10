@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://r3epaky07kxc"]
+
+[ext_resource type="PackedScene" uid="uid://cr1lqa3ssnwb3" path="res://Scenes/Menus/fight_menu.tscn" id="1_ptjh3"]
+[ext_resource type="PackedScene" uid="uid://rcl2kyft0fsd" path="res://Scenes/Menus/shop_menu.tscn" id="2_y6gox"]
+[ext_resource type="PackedScene" uid="uid://bkuc6jl46lq8n" path="res://Scenes/inv_menu.tscn" id="3_qk3r6"]
+
+[node name="Control" type="Control" unique_id=163390061]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TabContainer" type="TabContainer" parent="." unique_id=1012191534]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+current_tab = 0
+
+[node name="FightMenu" parent="TabContainer" unique_id=248577796 instance=ExtResource("1_ptjh3")]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="ShopMenu" parent="TabContainer" unique_id=1791199435 instance=ExtResource("2_y6gox")]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="InvMenu" parent="TabContainer" unique_id=551278917 instance=ExtResource("3_qk3r6")]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
