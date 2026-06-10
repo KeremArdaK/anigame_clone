@@ -10,7 +10,8 @@ var enemy_active_effects: Array[StatusEffect] = []
 @onready var enemy_side: VBoxContainer = $HBoxContainer/EnemySide
 @onready var fight_button: Button = $HBoxContainer/LogSide/FightButton
 @onready var battle_log: RichTextLabel = $HBoxContainer/LogSide/BattleLog
-@onready var stage_info: Label = $StageInfo
+@onready var stage_info: Label = %StageInfo
+@onready var shard_info: Label = %ShardLabel
 
 var current_player_hp: int
 var current_enemy_hp: int
@@ -135,13 +136,29 @@ func start_battle_loop():
 		
 		await get_tree().create_timer(0.8).timeout
 
-func add_effect_to_enemy(effect: StatusEffect):
-	enemy_active_effects.append(effect)
-	add_log("Enemy is affected by [color=purple]%s![/color]" % effect.name)
+func add_effect_to_enemy(new_effect: StatusEffect):
+	# 1. Sepette bu efekt zaten var mı diye kontrol et
+	for existing_effect in enemy_active_effects:
+		if existing_effect.name == new_effect.name:
+			# Varsa, yeni kopya ekleme! Sadece süresini (duration) baştaki haline sıfırla/yenile
+			existing_effect.duration = new_effect.duration
+			add_log("🔄 The duration of [color=yellow]%s[/color] on Enemy was refreshed!" % new_effect.name)
+			return # Fonksiyonu burada kes, işlemi bitir
+			
+	# 2. Eğer sepette yoksa, yepyeni bir hastalık olarak ekle
+	enemy_active_effects.append(new_effect)
+	add_log("Enemy is affected by [color=yellow]%s![/color]" % new_effect.name)
 
-func add_effect_to_player(effect: StatusEffect):
-	player_active_effects.append(effect)
-	add_log("You are affected by [color=purple]%s![/color]" % effect.name)
+func add_effect_to_player(new_effect: StatusEffect):
+	# Aynı mantığı oyuncu için de kuruyoruz
+	for existing_effect in player_active_effects:
+		if existing_effect.name == new_effect.name:
+			existing_effect.duration = new_effect.duration
+			add_log("🔄 The duration of [color=yellow]%s[/color] on You was refreshed!" % new_effect.name)
+			return 
+			
+	player_active_effects.append(new_effect)
+	add_log("You are affected by [color=yellow]%s![/color]" % new_effect.name)
 
 func execute_player_turn():
 	add_log("\n[color=blue]%s[/color] attacks!" % player_data.card_name)
@@ -172,19 +189,39 @@ func execute_player_turn():
 	player_side.get_child(0).update_health_ui(current_player_hp)
 
 func execute_enemy_turn():
-	if is_enemy_blinded:
-		add_log("%s MISSED!" % enemy_data.card_name)
-		is_enemy_blinded = false
-		return
+	add_log("\n[color=red]%s[/color] attacks!" % enemy_data.card_name)
+
+	# --- 1. Durak: Saldırı öncesi buff/debufflar ---
+	# DİKKAT: Saldıran düşman olduğu için enemy_active_effects ilk yazılır!
+	var final_damage = apply_pre_attack_buffs(enemy_data.attack_damage, enemy_active_effects, player_active_effects)
+
+	# --- 2. Durak: Blind ve Leech kontrolü ---
+	var hit_data = check_blind_and_leech(enemy_active_effects, enemy_data.card_name, final_damage)
 	
-	add_log("[color=red]%s[/color] is attacking!" % enemy_data.card_name)
-	
-	current_player_hp -= enemy_data.attack_damage
-	add_log("Enemy dealt [color=orange]%d[/color] damage!" % enemy_data.attack_damage)
-	player_side.get_child(0).update_health_ui(current_player_hp)
+	if hit_data["is_hit"]:
+		current_player_hp -= final_damage
+		player_side.get_child(0).update_health_ui(current_player_hp)
+		add_log("Enemy dealt [color=orange]%d[/color] damage!" % final_damage)
+
+		# Düşmanda Can çalma varsa (Vampire)
+		if hit_data["heal_amount"] > 0:
+			current_enemy_hp += hit_data["heal_amount"]
+			current_enemy_hp = clamp(current_enemy_hp, 0, enemy_data.max_health)
+			enemy_side.get_child(0).update_health_ui(current_enemy_hp)
+			add_log("🩸 Leech healed enemy for [color=green]%d[/color] HP!" % hit_data["heal_amount"])
+
+		# --- Düşman Vurursa Bize Hastalık (On-Hit) Bulaştırsın ---
+		for effect in enemy_data.on_hit_effects:
+			add_effect_to_player(effect.duplicate())
+
+	# --- 3. Durak: Tur sonu efektleri (SADECE DÜŞMAN İÇİN) ---
+	# İşte düşmanın ZEHİR veya YANMA hasarını tam burada yiyecek!
+	current_enemy_hp = process_turn_end_effects(current_enemy_hp, enemy_active_effects, enemy_data.card_name)
+	enemy_side.get_child(0).update_health_ui(current_enemy_hp)
 
 func update_ui():
 	stage_info.text = "Stage: %d" % current_stage
+	shard_info.text = "Card Shards: %d" % CurrencyManager.card_shards
 
 func apply_pre_attack_buffs(base_damage: int, attacker_effects: Array, defender_effects: Array):
 	var final_damage = base_damage
@@ -213,7 +250,8 @@ func process_turn_end_effects(target_hp: int, active_effects: Array[StatusEffect
 				add_log("🔥 %s takes [color=orange]%d[/color] %s damage!" % [target_name, effect.power, effect.name])
 				
 		# 2. Efektin süresini 1 tur azalt
-		effect.duration -= 1
+		if effect.duration < 999:
+			effect.duration -= 1
 		
 		# 3. Eğer süresi bittiyse (0 veya altındaysa) onu sahneden sil
 		if effect.duration <= 0:

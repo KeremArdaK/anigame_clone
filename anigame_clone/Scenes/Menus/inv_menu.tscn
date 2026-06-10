@@ -1,57 +1,6 @@
 [gd_scene format=3 uid="uid://b8ug7qnvn7gr8"]
 
-[ext_resource type="Texture2D" uid="uid://bd3rqvhnm1pap" path="res://icon.svg" id="1_apfpb"]
+[sub_resource type="GDScript" id="GDScript_ddsdx"]
 
-[node name="InvMenu" type="Control" unique_id=22844986]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="MarginContainer" type="MarginContainer" parent="." unique_id=979454989]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=1869315526]
-layout_mode = 2
-
-[node name="InventorySide" type="VBoxContainer" parent="MarginContainer/HBoxContainer" unique_id=667209408]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer/InventorySide" unique_id=1479966686]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="InvGrid" type="GridContainer" parent="MarginContainer/HBoxContainer/InventorySide/ScrollContainer" unique_id=1475779257]
-layout_mode = 2
-columns = 5
-
-[node name="DetailsSide" type="PanelContainer" parent="MarginContainer/HBoxContainer" unique_id=1132876953]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/DetailsSide" unique_id=2133834494]
-layout_mode = 2
-
-[node name="CardNameLbl" type="Label" parent="MarginContainer/HBoxContainer/DetailsSide/VBoxContainer" unique_id=996348643]
-layout_mode = 2
-size_flags_vertical = 6
-size_flags_stretch_ratio = 0.4
-text = "CARD NAME"
-
-[node name="CardTexture" type="TextureRect" parent="MarginContainer/HBoxContainer/DetailsSide/VBoxContainer" unique_id=34881036]
-layout_mode = 2
-size_flags_vertical = 3
-texture = ExtResource("1_apfpb")
-
-[node name="CardInfo" type="RichTextLabel" parent="MarginContainer/HBoxContainer/DetailsSide/VBoxContainer" unique_id=1267668683]
-layout_mode = 2
-size_flags_vertical = 3
-bbcode_enabled = true
+[node name="CarouselContainer" type="Node2D" unique_id=1770105457]
+script = SubResource("GDScript_ddsdx")

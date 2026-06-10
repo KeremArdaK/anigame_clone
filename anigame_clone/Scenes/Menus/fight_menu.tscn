@@ -38,6 +38,20 @@ size_flags_horizontal = 3
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="StageInfo" type="Label" parent="FightMenu/MarginContainer/HBoxContainer/LogSide" unique_id=1129322769]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 28
+text = "STAGE 5"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ShardLabel" type="Label" parent="FightMenu/MarginContainer/HBoxContainer/LogSide" unique_id=881021765]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Total Shards:"
+
 [node name="Spacer" type="Control" parent="FightMenu/MarginContainer/HBoxContainer/LogSide" unique_id=884782047]
 layout_mode = 2
 size_flags_vertical = 3
@@ -58,11 +72,3 @@ bbcode_enabled = true
 [node name="EnemySide" type="VBoxContainer" parent="FightMenu/MarginContainer/HBoxContainer" unique_id=852775805]
 layout_mode = 2
 size_flags_horizontal = 3
-
-[node name="StageInfo" type="Label" parent="FightMenu/MarginContainer" unique_id=1129322769]
-layout_mode = 2
-size_flags_vertical = 0
-theme_override_font_sizes/font_size = 28
-text = "STAGE 5"
-horizontal_alignment = 1
-vertical_alignment = 1
