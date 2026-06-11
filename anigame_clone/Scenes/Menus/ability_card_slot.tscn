@@ -1,24 +1,28 @@
 [gd_scene format=3 uid="uid://dl7ciofqf7gjm"]
 
-[ext_resource type="Texture2D" uid="uid://bd3rqvhnm1pap" path="res://icon.svg" id="1_apfpb"]
 [ext_resource type="Script" uid="uid://dyk8fi51pmj50" path="res://Scenes/Menus/ability_card_slot.gd" id="1_h6auy"]
+[ext_resource type="Texture2D" uid="uid://c5fqou1lfbmro" path="res://Textures/icons/Buffs/attack_boost.png" id="2_cw3mm"]
 
 [node name="AbilityCardSlot" type="TextureButton" unique_id=959887020]
-offset_right = 129.0
-offset_bottom = 129.0
+custom_minimum_size = Vector2(180, 180)
+offset_right = 130.0
+offset_bottom = 130.0
 script = ExtResource("1_h6auy")
 
 [node name="AbilityIcon" type="TextureRect" parent="." unique_id=690930830]
 unique_name_in_owner = true
+texture_filter = 1
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-texture = ExtResource("1_apfpb")
+offset_right = 140.0
+offset_bottom = 131.0
+texture = ExtResource("2_cw3mm")
 
 [node name="AbilityName" type="Label" parent="." unique_id=999713247]
 unique_name_in_owner = true
 layout_mode = 0
-offset_right = 126.0
-offset_bottom = 36.0
+offset_left = 8.0
+offset_top = 121.0
+offset_right = 134.0
+offset_bottom = 157.0
 text = "ABILITY CARD"
 horizontal_alignment = 1

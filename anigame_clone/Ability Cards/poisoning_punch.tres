@@ -1,11 +1,13 @@
 [gd_resource type="Resource" script_class="ResourceCardData" format=3 uid="uid://d1vw3qlba2ttq"]
 
 [ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="1_0ff2h"]
+[ext_resource type="Texture2D" uid="uid://cf7bkt1f5237e" path="res://Textures/icons/Spells/poison_dagger.png" id="1_mhci5"]
 [ext_resource type="Resource" uid="uid://bkx0u3tvtqndu" path="res://Status Effects/poison.tres" id="2_mhci5"]
 [ext_resource type="Script" uid="uid://dpb8ctob5ni15" path="res://Scripts/resource_card_data.gd" id="3_g8il1"]
 
 [resource]
 script = ExtResource("3_g8il1")
 card_name = "Poisoning Punch"
+card_texture = ExtResource("1_mhci5")
 effects_to_apply = Array[ExtResource("1_0ff2h")]([ExtResource("2_mhci5")])
 metadata/_custom_type_script = "uid://dpb8ctob5ni15"

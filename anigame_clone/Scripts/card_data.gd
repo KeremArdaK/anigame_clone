@@ -15,7 +15,8 @@ enum Rarity {COMMON, RARE, LEGENDARY, MYTHIC}
 
 
 @export var card_name: String = "Yeni Kart"
-@export var card_description: String = ""
+@export_multiline var card_description: String = ""
+@export_multiline var flavor_text: String = ""
 @export var card_texture: Texture2D
 
 @export var attack_damage: int = 0

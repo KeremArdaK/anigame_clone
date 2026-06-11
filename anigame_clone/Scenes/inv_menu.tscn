@@ -10,25 +10,76 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_wgd5n")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1633745467]
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=62288841]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer" unique_id=1633745467]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="SearchBar" type="LineEdit" parent="VBoxContainer" unique_id=566097562]
+[node name="SearchBar" type="LineEdit" parent="HBoxContainer/VBoxContainer" unique_id=566097562]
 unique_name_in_owner = true
 layout_mode = 2
+placeholder_text = "Search any card..."
+clear_button_enabled = true
 
-[node name="Seperator" type="HSeparator" parent="VBoxContainer" unique_id=787349494]
+[node name="Seperator" type="HSeparator" parent="HBoxContainer/VBoxContainer" unique_id=787349494]
 layout_mode = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer" unique_id=112544716]
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/VBoxContainer" unique_id=112544716]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="CardGrid" type="GridContainer" parent="VBoxContainer/ScrollContainer" unique_id=579491539]
+[node name="CardGrid" type="GridContainer" parent="HBoxContainer/VBoxContainer/ScrollContainer" unique_id=579491539]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 columns = 5
+
+[node name="ToolTipPanel" type="PanelContainer" parent="HBoxContainer" unique_id=1185117379]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/ToolTipPanel" unique_id=336256233]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="HBoxContainer/ToolTipPanel/VBoxContainer" unique_id=1246005875]
+unique_name_in_owner = true
+layout_mode = 2
+text = "CARD_NAME"
+
+[node name="StatsLabel" type="RichTextLabel" parent="HBoxContainer/ToolTipPanel/VBoxContainer" unique_id=1476150737]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.3
+bbcode_enabled = true
+text = "[b]PLACEHOLDER TEXT[/b]"
+
+[node name="LoreLabel" type="RichTextLabel" parent="HBoxContainer/ToolTipPanel/VBoxContainer" unique_id=518122117]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "[i]There is something strange about it...[/i]"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/ToolTipPanel/VBoxContainer" unique_id=989199907]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="EquipButton" type="Button" parent="HBoxContainer/ToolTipPanel/VBoxContainer/HBoxContainer" unique_id=643920713]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "EQUIP"
+
+[node name="CloseButton" type="Button" parent="HBoxContainer/ToolTipPanel/VBoxContainer/HBoxContainer" unique_id=976448462]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "CLOSE"

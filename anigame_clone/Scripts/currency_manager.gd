@@ -3,7 +3,7 @@ extends Node
 # Para değiştiğinde tüm UI'lara haber verecek sinyal
 signal shards_updated(new_amount: int)
 
-var card_shards: int = 0
+var card_shards: int = 500
 
 # Para ekleme fonksiyonu
 func add_shards(amount: int):

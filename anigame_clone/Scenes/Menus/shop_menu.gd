@@ -24,6 +24,7 @@ var shop_card_pool: Array[ResourceCardData] = [
 @onready var buy_button = %BuyButton
 @onready var card_texture = %CardTexture
 @onready var result_label = %ResultLabel
+
 func _ready():
     buy_button.pressed.connect(_on_buy_button_pressed)
 
@@ -31,7 +32,8 @@ func _on_buy_button_pressed():
     #birinci aşama kontrol
     if CurrencyManager.card_shards < PACK_PRICE:
         result_label.text = "Not enough shards! You need %d." % PACK_PRICE
-    
+        return
+
     #iknici aşama ödeme
     CurrencyManager.spend_shards(PACK_PRICE)
 
@@ -44,9 +46,14 @@ func _on_buy_button_pressed():
         var random_index = randi() % shop_card_pool.size()
         var pulled_card = shop_card_pool[random_index]
 
-        InventoryManager.owned_ability_cards.append(pulled_card)
-
-        pulled_card_names.append(pulled_card.card_name)
+        if InventoryManager.owned_ability_cards.has(pulled_card):
+            var refund_shards = 150
+            CurrencyManager.add_shards(refund_shards)
+            pulled_card_names.append(pulled_card.card_name + " (Copy! +150 shards returned.)")
+        else:
+            InventoryManager.owned_ability_cards.append(pulled_card)
+            pulled_card_names.append(pulled_card.card_name)
+        
     
     result_label.text = "Pack Opened! You got: " + ", ".join(pulled_card_names)
 
