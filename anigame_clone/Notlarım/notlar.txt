@@ -10,4 +10,4 @@ Her rengin aynı zamanda bir açık ve bir koyu tonuna ihtiyacım varmış.
 
 
 Yapılacaklar:
-InvMenu'deki bugları düzelt.
+Bugları düzelt.

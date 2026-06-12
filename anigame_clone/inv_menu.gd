@@ -17,33 +17,38 @@ var filtered_pool: Array[ResourceCardData] = []
 var currently_viewed_card: ResourceCardData = null # O an Tooltip'te açık olan kart
 
 func _ready():
-	
-	refresh_inventory_view()
 	search_bar.text_changed.connect(_on_search_text_changed)
-
 	equip_button.pressed.connect(_on_equip_button_pressed)
 	close_button.pressed.connect(_on_close_button_pressed)
 
+	# 1. ÖNCE VERİYİ HAZIRLA: Varsayılan kartı ekle
 	if InventoryManager.owned_ability_cards.is_empty():
 		InventoryManager.owned_ability_cards.append(preload("res://Ability Cards/flamingpunch.tres"))
 
+	# 2. HAVUZU OLUŞTUR
 	filtered_pool = InventoryManager.owned_ability_cards.duplicate()
 
+	# 3. EN SON EKRANI ÇİZ (Veriler hazır olduktan sonra)
+	refresh_inventory_view()
 	
 
 func refresh_inventory_view():
-
 	if search_bar.text.is_empty():
 		filtered_pool = InventoryManager.owned_ability_cards.duplicate() as Array[ResourceCardData]
-	#ızgaradaki her kartı temizle
+	
+	# ızgaradaki her kartı temizle
 	for child in card_grid.get_children():
 		child.queue_free()
 
-	#filtrelenmiş havuzdaki her kart verisi için bir slot oluştur
+	# filtrelenmiş havuzdaki her kart verisi için bir slot oluştur
 	for card_data in filtered_pool:
 		var slot_instance = SLOT_SCENE.instantiate()
 		card_grid.add_child(slot_instance)
 		slot_instance.render_slot(card_data)
+		
+		# SİNYAL BAĞLANTISI
+		if not slot_instance.is_connected("slot_clicked", Callable(self, "_on_card_slot_clicked")):
+			slot_instance.slot_clicked.connect(_on_card_slot_clicked)
 
 func _on_card_slot_clicked(card_data: ResourceCardData):
 	currently_viewed_card = card_data
@@ -53,8 +58,8 @@ func _on_card_slot_clicked(card_data: ResourceCardData):
 	tooltip_lore.text = "[i]" + card_data.flavor_text + "[/i]"
 
 	if InventoryManager.equipped_ability_cards.has(card_data):
-		equip_button.text = "Equipped"
-		equip_button.disabled = true
+		equip_button.text = "Unequip"
+		equip_button.disabled = false
 	else:
 		equip_button.text = "Equip"
 		equip_button.disabled = false
@@ -64,14 +69,20 @@ func _on_card_slot_clicked(card_data: ResourceCardData):
 func _on_equip_button_pressed():
 	if currently_viewed_card == null: return
 	
-	var success = InventoryManager.equip_card(currently_viewed_card)
-	if success:
-		print("Equipped ", currently_viewed_card.card_name)
-		equip_button.text = "Equipped"
-		equip_button.disabled = true
+	# Eğer kart zaten kuşanılmışsa, onu çıkart (Unequip)
+	if InventoryManager.equipped_ability_cards.has(currently_viewed_card):
+		InventoryManager.unequip_card(currently_viewed_card)
+		equip_button.text = "Equip"
+		print("Unequipped ", currently_viewed_card.card_name)
 	else:
-		print("Slotlar Dolu!")
-
+		# Kart kuşanılmamışsa, kuşanmayı dene (Equip)
+		var success = InventoryManager.equip_card(currently_viewed_card)
+		if success:
+			print("Equipped ", currently_viewed_card.card_name)
+			equip_button.text = "Unequip"
+		else:
+			print("Slotlar Dolu!")
+			# İstersen burada tooltip üzerinden oyuncuya kırmızı bir "Equip slots full!" uyarısı da gösterebilirsin.
 func _on_close_button_pressed():
 	tooltip_panel.hide()
 	currently_viewed_card = null

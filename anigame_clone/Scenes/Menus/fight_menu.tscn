@@ -34,6 +34,11 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="EquippedAbilitiesContainer" type="HBoxContainer" parent="FightMenu/MarginContainer/HBoxContainer/PlayerSide" unique_id=585635685]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 10
+
 [node name="LogSide" type="VBoxContainer" parent="FightMenu/MarginContainer/HBoxContainer" unique_id=1060613173]
 layout_mode = 2
 size_flags_horizontal = 3

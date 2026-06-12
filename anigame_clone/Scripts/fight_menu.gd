@@ -6,6 +6,9 @@ const CARD_SCENE = preload("res://Scenes/card.tscn")
 var player_active_effects: Array[StatusEffect] = []
 var enemy_active_effects: Array[StatusEffect] = []
 
+var player_active_on_hit_effects: Array[StatusEffect] = []
+
+
 @onready var player_side: VBoxContainer = $HBoxContainer/PlayerSide
 @onready var enemy_side: VBoxContainer = $HBoxContainer/EnemySide
 @onready var fight_button: Button = $HBoxContainer/LogSide/FightButton
@@ -64,12 +67,19 @@ func setup_initial_battlefield():
 	current_player_hp = player_data.max_health
 	
 	player_active_effects.clear()
+
 	for effect in player_data.innate_effects:
 		player_active_effects.append(effect.duplicate())
+	
+	for ability_card in InventoryManager.equipped_ability_cards:
+		for effect in ability_card.effects_to_apply:
+			player_active_effects.append(effect.duplicate()) 
 	spawn_new_enemy()
 	
 	add_log("[i]Ready to [color=red]FIGHT![/color][/i]")
 	update_ui()
+
+	update_equipped_abilities_ui()
 
 func spawn_new_enemy():
 	var random_enemy_name = ENEMY_POOL[randi() % ENEMY_POOL.size()]
@@ -87,8 +97,29 @@ func spawn_new_enemy():
 
 func _on_fight_button_pressed():
 	fight_button.disabled = true
+	prepare_player_for_battle() # 🌟 Savaşı başlatmadan hemen önce karakteri silahlandırıyoruz!
 	start_battle_loop()
 
+func prepare_player_for_battle():
+	# 1. Eski savaştan kalanları temizle
+	player_active_effects.clear()
+	player_active_on_hit_effects.clear() # 🌟 Yeni sepeti de temizliyoruz
+	
+	# 2. Morn'un Kendi Pasifleri ve Vuruş Etkileri
+	for effect in player_data.innate_effects:
+		player_active_effects.append(effect.duplicate())
+	for effect in player_data.on_hit_effects:
+		player_active_on_hit_effects.append(effect.duplicate()) # 🌟 Morn'un doğuştan vuruşları
+		
+	# 3. Kuşandığımız Yetenek Kartlarının Pasifleri ve Vuruş Etkileri
+	for ability_card in InventoryManager.equipped_ability_cards:
+		for effect in ability_card.innate_effects:
+			player_active_effects.append(effect.duplicate())
+		for effect in ability_card.on_hit_effects:
+			player_active_on_hit_effects.append(effect.duplicate()) # 🌟 Kartların vuruşları
+			
+	# Arayüzü çiz
+	update_equipped_abilities_ui()
 func start_battle_loop():
 	add_log("Fight!")
 	
@@ -171,22 +202,24 @@ func execute_player_turn():
 	
 	if hit_data["is_hit"]:
 		current_enemy_hp -= final_damage
-		enemy_side.get_child(0).update_health_ui(current_enemy_hp)
+		active_enemy_card.update_health_ui(current_enemy_hp)
 		add_log("You dealt [color=orange]%d[/color] damage!" % final_damage)
 
 		# Can çalma varsa
 		if hit_data["heal_amount"] > 0:
 			current_player_hp += hit_data["heal_amount"]
 			current_player_hp = clamp(current_player_hp, 0, player_data.max_health)
-			player_side.get_child(0).update_health_ui(current_player_hp)
+			active_player_card.update_health_ui(current_player_hp)
 			add_log("Leech healed [color=green]%d[/color] HP!" % hit_data["heal_amount"])
 
-		for effect in player_data.on_hit_effects:
+		for effect in player_active_on_hit_effects:
 			add_effect_to_enemy(effect.duplicate())
+
+		
 	# --- 3. Durak: Tur sonu efektleri (SADECE OYUNCU İÇİN) ---
 	current_player_hp = process_turn_end_effects(current_player_hp, player_active_effects, player_data.card_name)
 	
-	player_side.get_child(0).update_health_ui(current_player_hp)
+	active_player_card.update_health_ui(current_player_hp)
 
 func execute_enemy_turn():
 	add_log("\n[color=red]%s[/color] attacks!" % enemy_data.card_name)
@@ -200,14 +233,14 @@ func execute_enemy_turn():
 	
 	if hit_data["is_hit"]:
 		current_player_hp -= final_damage
-		player_side.get_child(0).update_health_ui(current_player_hp)
+		active_player_card.update_health_ui(current_player_hp)
 		add_log("Enemy dealt [color=orange]%d[/color] damage!" % final_damage)
 
 		# Düşmanda Can çalma varsa (Vampire)
 		if hit_data["heal_amount"] > 0:
 			current_enemy_hp += hit_data["heal_amount"]
 			current_enemy_hp = clamp(current_enemy_hp, 0, enemy_data.max_health)
-			enemy_side.get_child(0).update_health_ui(current_enemy_hp)
+			active_enemy_card.update_health_ui(current_enemy_hp)
 			add_log("🩸 Leech healed enemy for [color=green]%d[/color] HP!" % hit_data["heal_amount"])
 
 		# --- Düşman Vurursa Bize Hastalık (On-Hit) Bulaştırsın ---
@@ -217,7 +250,7 @@ func execute_enemy_turn():
 	# --- 3. Durak: Tur sonu efektleri (SADECE DÜŞMAN İÇİN) ---
 	# İşte düşmanın ZEHİR veya YANMA hasarını tam burada yiyecek!
 	current_enemy_hp = process_turn_end_effects(current_enemy_hp, enemy_active_effects, enemy_data.card_name)
-	enemy_side.get_child(0).update_health_ui(current_enemy_hp)
+	active_enemy_card.update_health_ui(current_enemy_hp)
 
 func update_ui():
 	stage_info.text = "Stage: %d" % current_stage
@@ -273,3 +306,34 @@ func check_blind_and_leech(attacker_effects: Array, attacker_name: String, base_
 			result["heal_amount"] = (base_damage * effect.power) / 100 
 			add_log("%s will LEECH [color=green]%d[/color] HP on hit!" % [attacker_name, result["heal_amount"]])
 	return result
+
+func update_equipped_abilities_ui():
+	var container = %EquippedAbilitiesContainer
+
+	for child in container.get_children():
+		child.queue_free()
+
+	for ability_card in InventoryManager.equipped_ability_cards:
+		var icon_rect = TextureRect.new()
+
+		icon_rect.texture = ability_card.card_texture
+
+		icon_rect.custom_minimum_size = Vector2(48, 48)
+
+		icon_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		
+		icon_rect.tooltip_text = ability_card.card_name + "\n" + ability_card.card_description
+
+		if ability_card.card_texture != null:
+			icon_rect.texture = ability_card.card_texture
+		else:
+			# Henüz ikon çizmediysen, kutunun içini geçici bir dokuyla doldur!
+			# Böylece oyunu test ederken orada olduklarını görebilirsin.
+			var placeholder = PlaceholderTexture2D.new()
+			placeholder.size = Vector2(48, 48)
+			icon_rect.texture = placeholder
+			icon_rect.modulate = Color(0.8, 0.2, 0.2) # Şık, koyu kırmızı bir kutu
+
+
+		container.add_child(icon_rect)

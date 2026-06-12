@@ -2,14 +2,32 @@
 
 [ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="1_cwiq6"]
 [ext_resource type="Texture2D" uid="uid://c5fqou1lfbmro" path="res://Textures/icons/Buffs/attack_boost.png" id="1_nhtfd"]
-[ext_resource type="Resource" uid="uid://dcm3olv3p1am" path="res://Status Effects/blindness.tres" id="2_nhtfd"]
-[ext_resource type="Resource" uid="uid://b5qs7jgnaitnw" path="res://Status Effects/damage_buff.tres" id="3_3b771"]
 [ext_resource type="Script" uid="uid://dpb8ctob5ni15" path="res://Scripts/resource_card_data.gd" id="4_jq150"]
+
+[sub_resource type="Resource" id="Resource_x7iq8"]
+script = ExtResource("1_cwiq6")
+name = "DamageBuff"
+description = "Bufffs your damage."
+effect_type = 4
+power = 15
+duration = 9999
+metadata/_custom_type_script = "uid://ghy0pniysv4f"
+
+[sub_resource type="Resource" id="Resource_cwiq6"]
+script = ExtResource("1_cwiq6")
+name = "Burn"
+description = "Burns enemies for 3 turn for X damage."
+effect_type = 1
+power = 7
+duration = 4
+metadata/_custom_type_script = "uid://ghy0pniysv4f"
 
 [resource]
 script = ExtResource("4_jq150")
 card_name = "Blinding Rage"
+card_description = "%15 dmg buff and burn for first 4 turns"
 card_texture = ExtResource("1_nhtfd")
 rarity = 1
-effects_to_apply = Array[ExtResource("1_cwiq6")]([ExtResource("2_nhtfd"), ExtResource("3_3b771")])
+innate_effects = Array[ExtResource("1_cwiq6")]([SubResource("Resource_x7iq8")])
+on_hit_effects = Array[ExtResource("1_cwiq6")]([SubResource("Resource_cwiq6")])
 metadata/_custom_type_script = "uid://dpb8ctob5ni15"

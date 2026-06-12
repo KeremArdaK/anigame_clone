@@ -2,14 +2,12 @@
 
 [ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="1_e3fss"]
 [ext_resource type="Script" uid="uid://dieialnq8mc0f" path="res://Scripts/card_data.gd" id="1_n5a1c"]
-[ext_resource type="Resource" uid="uid://c7csbbsa6pksd" path="res://Status Effects/burn.tres" id="2_jbo4o"]
 
 [resource]
 script = ExtResource("1_n5a1c")
-on_hit_effects = Array[ExtResource("1_e3fss")]([ExtResource("2_jbo4o")])
 card_name = "Morn"
 attack_damage = 15
-max_health = 1000
+max_health = 100
 attack_type = 1
 rarity = 3
 metadata/_custom_type_script = "uid://dieialnq8mc0f"
