@@ -1,13 +1,21 @@
 [gd_resource type="Resource" script_class="ResourceCardData" format=3 uid="uid://db8pgmuagedul"]
 
 [ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="1_27bvc"]
-[ext_resource type="Resource" uid="uid://b2mtva8r22mfr" path="res://Status Effects/explode_on_death.tres" id="2_fx074"]
-[ext_resource type="Resource" uid="uid://b5qs7jgnaitnw" path="res://Status Effects/damage_buff.tres" id="3_cgnob"]
 [ext_resource type="Script" uid="uid://dpb8ctob5ni15" path="res://Scripts/resource_card_data.gd" id="4_or5dk"]
+
+[sub_resource type="Resource" id="Resource_2r6ps"]
+script = ExtResource("1_27bvc")
+name = "Explode On Death"
+description = "Makes you explode on death"
+effect_type = 7
+power = 75
+duration = 9999
+metadata/_custom_type_script = "uid://ghy0pniysv4f"
 
 [resource]
 script = ExtResource("4_or5dk")
 card_name = "Kamikaze Protocol"
+card_description = "Explode on death."
 rarity = 1
-effects_to_apply = Array[ExtResource("1_27bvc")]([ExtResource("2_fx074"), ExtResource("3_cgnob")])
+innate_effects = Array[ExtResource("1_27bvc")]([SubResource("Resource_2r6ps")])
 metadata/_custom_type_script = "uid://dpb8ctob5ni15"

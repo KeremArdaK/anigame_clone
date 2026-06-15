@@ -2,12 +2,21 @@
 
 [ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="1_hd32n"]
 [ext_resource type="Texture2D" uid="uid://btbjd8i2bwoey" path="res://Textures/icons/Spells/fire_spell.png" id="1_jrcng"]
-[ext_resource type="Resource" uid="uid://c7csbbsa6pksd" path="res://Status Effects/burn.tres" id="2_jrcng"]
 [ext_resource type="Script" uid="uid://dpb8ctob5ni15" path="res://Scripts/resource_card_data.gd" id="3_81xa5"]
+
+[sub_resource type="Resource" id="Resource_hd32n"]
+script = ExtResource("1_hd32n")
+name = "Burn"
+description = "Burns enemies for 3 turn for X damage."
+effect_type = 1
+power = 15
+duration = 9999
+metadata/_custom_type_script = "uid://ghy0pniysv4f"
 
 [resource]
 script = ExtResource("3_81xa5")
 card_name = "Burning Punch"
+card_description = "Burns enemies on-hit."
 card_texture = ExtResource("1_jrcng")
-effects_to_apply = Array[ExtResource("1_hd32n")]([ExtResource("2_jrcng")])
+on_hit_effects = Array[ExtResource("1_hd32n")]([SubResource("Resource_hd32n")])
 metadata/_custom_type_script = "uid://dpb8ctob5ni15"

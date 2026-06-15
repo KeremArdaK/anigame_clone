@@ -4,15 +4,6 @@
 [ext_resource type="Texture2D" uid="uid://bar1brd5inu2p" path="res://Textures/icons/Debuffs/bleeding.png" id="1_r4bgy"]
 [ext_resource type="Script" uid="uid://dpb8ctob5ni15" path="res://Scripts/resource_card_data.gd" id="2_r4bgy"]
 
-[sub_resource type="Resource" id="Resource_njtrn"]
-script = ExtResource("1_njtrn")
-name = "Leech"
-description = "Heals you based on your damage on hit."
-effect_type = 3
-power = 100
-duration = 9999
-metadata/_custom_type_script = "uid://ghy0pniysv4f"
-
 [sub_resource type="Resource" id="Resource_r4bgy"]
 script = ExtResource("1_njtrn")
 name = "Resurrection"
@@ -23,6 +14,15 @@ duration = 9999
 metadata/_custom_type_script = "uid://ghy0pniysv4f"
 
 [sub_resource type="Resource" id="Resource_ffnd1"]
+script = ExtResource("1_njtrn")
+name = "Leech"
+description = "Heals you based on your damage on hit."
+effect_type = 3
+power = 100
+duration = 9999
+metadata/_custom_type_script = "uid://ghy0pniysv4f"
+
+[sub_resource type="Resource" id="Resource_kqgdy"]
 script = ExtResource("1_njtrn")
 name = "DamageBuff"
 description = "Bufffs your damage."
@@ -37,5 +37,5 @@ card_name = "Vampire's Vessel"
 card_description = "%90 resurrection, %100 leech and %50 dmg buff."
 card_texture = ExtResource("1_r4bgy")
 rarity = 3
-effects_to_apply = Array[ExtResource("1_njtrn")]([SubResource("Resource_njtrn"), SubResource("Resource_r4bgy"), SubResource("Resource_ffnd1")])
+innate_effects = Array[ExtResource("1_njtrn")]([SubResource("Resource_r4bgy"), SubResource("Resource_ffnd1"), SubResource("Resource_kqgdy")])
 metadata/_custom_type_script = "uid://dpb8ctob5ni15"

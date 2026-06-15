@@ -15,17 +15,16 @@ metadata/_custom_type_script = "uid://ghy0pniysv4f"
 
 [sub_resource type="Resource" id="Resource_cwiq6"]
 script = ExtResource("1_cwiq6")
-name = "Burn"
-description = "Burns enemies for 3 turn for X damage."
-effect_type = 1
-power = 7
-duration = 4
+name = "Blindness"
+description = "Blinds enemies."
+power = 50
+duration = 3
 metadata/_custom_type_script = "uid://ghy0pniysv4f"
 
 [resource]
 script = ExtResource("4_jq150")
 card_name = "Blinding Rage"
-card_description = "%15 dmg buff and burn for first 4 turns"
+card_description = "%15 dmg buff."
 card_texture = ExtResource("1_nhtfd")
 rarity = 1
 innate_effects = Array[ExtResource("1_cwiq6")]([SubResource("Resource_x7iq8")])

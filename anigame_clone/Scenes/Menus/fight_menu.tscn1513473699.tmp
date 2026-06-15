@@ -62,11 +62,6 @@ layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.2
 
-[node name="AutoFightButton" type="CheckButton" parent="FightMenu/MarginContainer/HBoxContainer/LogSide" unique_id=949570982]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Auto Fight"
-
 [node name="FightButton" type="Button" parent="FightMenu/MarginContainer/HBoxContainer/LogSide" unique_id=266246687]
 custom_minimum_size = Vector2(20, 20)
 layout_mode = 2

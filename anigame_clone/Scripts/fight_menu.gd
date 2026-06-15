@@ -9,6 +9,7 @@ var enemy_active_effects: Array[StatusEffect] = []
 var player_active_on_hit_effects: Array[StatusEffect] = []
 
 
+@onready var auto_fight_button: CheckButton = %AutoFightButton
 @onready var player_side: VBoxContainer = $HBoxContainer/PlayerSide
 @onready var enemy_side: VBoxContainer = $HBoxContainer/EnemySide
 @onready var fight_button: Button = $HBoxContainer/LogSide/FightButton
@@ -82,9 +83,29 @@ func setup_initial_battlefield():
 	update_equipped_abilities_ui()
 
 func spawn_new_enemy():
-	var random_enemy_name = ENEMY_POOL[randi() % ENEMY_POOL.size()]
+	# 1. O anki dalgaya (stage) uygun düşmanları toplayacağımız geçici havuz
+	var valid_enemies: Array[String] = []
+	
+	# 2. Tüm düşman listesini tara ve kurallara uyanları havuza at
+	for enemy_name in ENEMY_POOL:
+		var data = CardDatabase.get_card(enemy_name)
+		
+		# KURAL 1: Stage 30'dan önce Legendary gelemez!
+		if data.rarity == CardData.Rarity.LEGENDARY and current_stage < 30:
+			continue # Bu düşmanı atla, havuza koyma
+			
+		# KURAL 2: Stage 40'tan önce Mythic gelemez!
+		if data.rarity == CardData.Rarity.MYTHIC and current_stage < 40:
+			continue 
+			
+		# Kuralları geçenleri geçerli havuza ekle
+		valid_enemies.append(enemy_name)
+	
+	# 3. Artık rastgele seçimi sadece kurallardan geçmiş "valid_enemies" içinden yapıyoruz
+	var random_enemy_name = valid_enemies[randi() % valid_enemies.size()]
 	enemy_data = CardDatabase.get_card(random_enemy_name)
 	
+	# ... (Geri kalan render_data ve can yükleme kısımları senin kodunla aynı)
 	active_enemy_card.render_data(enemy_data)
 	current_enemy_hp = enemy_data.max_health
 	
@@ -120,51 +141,61 @@ func prepare_player_for_battle():
 			
 	# Arayüzü çiz
 	update_equipped_abilities_ui()
+
 func start_battle_loop():
 	add_log("Fight!")
 	
 	while current_player_hp > 0:
 		await execute_player_turn()
 		
-		# --- DÜŞMAN ÖLÜMÜ & SHARD KAZANCI ---
+		# --- DÜŞMAN ÖLÜM KONTROLÜ ---
 		if current_enemy_hp <= 0:
-			add_log("[color=green]Victory! %s defeated![/color]" % enemy_data.card_name)
-			
-			var shards_earned = 0
-			match enemy_data.rarity:
-				CardData.Rarity.COMMON: shards_earned = 3
-				CardData.Rarity.RARE: shards_earned = 6
-				CardData.Rarity.LEGENDARY: shards_earned = 15
-				CardData.Rarity.MYTHIC: shards_earned = 50
-			
-			CurrencyManager.add_shards(shards_earned)
-			add_log("[color=cyan]+%d Card Shard[/color] (Total: %d)" % [shards_earned, CurrencyManager.card_shards])
-			
-			current_stage += 1
-			update_ui()
-			await get_tree().create_timer(1.5).timeout
-			
-			spawn_new_enemy()
-			continue
-			
+			if check_resurrection("enemy", enemy_active_effects, enemy_data.max_health):
+				pass # Düşman dirildi! Savaş tüm hızıyla devam ediyor.
+			else:
+				# Gerçekten öldü. Önce patlama kontrolü yapıyoruz!
+				check_explode_on_death("enemy", enemy_active_effects)
+				
+				add_log("[color=green]Victory! %s defeated![/color]" % enemy_data.card_name)
+				
+				var shards_earned = 0
+				match enemy_data.rarity:
+					CardData.Rarity.COMMON: shards_earned = 3
+					CardData.Rarity.RARE: shards_earned = 6
+					CardData.Rarity.LEGENDARY: shards_earned = 15
+					CardData.Rarity.MYTHIC: shards_earned = 50
+				
+				CurrencyManager.add_shards(shards_earned)
+				add_log("[color=cyan]+%d Card Shard[/color] (Total: %d)" % [shards_earned, CurrencyManager.card_shards])
+				
+				# --- SİNSİ PATLAMA KONTROLÜ ---
+				# Düşman patlayıp o hasarla bizi öldürmüş olabilir mi?
+				if current_player_hp <= 0:
+					if check_resurrection("player", player_active_effects, player_data.max_health):
+						pass # Morn patlamadan sağ çıktı / dirildi!
+					else:
+						handle_player_defeat()
+						break # Savaş bitti, döngüden çık
+						
+				current_stage += 1
+				update_ui()
+				await get_tree().create_timer(1.5).timeout
+				
+				spawn_new_enemy()
+				continue
+				
 		await get_tree().create_timer(0.8).timeout
 		
 		await execute_enemy_turn()
 		
-		# --- OYUNCU ÖLÜMÜ & SİSTEMİ SIFIRLAMA ---
+		# --- OYUNCU ÖLÜM KONTROLÜ ---
 		if current_player_hp <= 0:
-			add_log("\n[color=red]Defeat...[/color] Your Highscore: %d" % current_stage)
-			add_log("[color=yellow]System Reset... HP restored. Back to Stage 1.[/color]")
-			
-			current_stage = 1
-			current_player_hp = player_data.max_health
-			active_player_card.update_health_ui(current_player_hp)
-			update_ui()
-			spawn_new_enemy()
-			
-			fight_button.disabled = false
-			break
-		
+			if check_resurrection("player", player_active_effects, player_data.max_health):
+				pass # Dirildik, savaşa devam!
+			else:
+				handle_player_defeat()
+				break # Yenildik
+				
 		await get_tree().create_timer(0.8).timeout
 
 func add_effect_to_enemy(new_effect: StatusEffect):
@@ -337,3 +368,57 @@ func update_equipped_abilities_ui():
 
 
 		container.add_child(icon_rect)
+
+func check_resurrection(target: String, active_effects: Array[StatusEffect], max_hp: int) -> bool:
+	for i in range(active_effects.size() - 1, -1, -1):
+		var effect = active_effects[i]
+		if effect.effect_type == StatusEffect.Type.RESURRECTION:
+			var heal_amount = (max_hp * effect.power) / 100
+			if heal_amount <= 0: heal_amount = max_hp
+
+			if target == "player":
+				current_player_hp = heal_amount
+				active_player_card.update_health_ui(current_player_hp)
+				add_log("✨ [color=cyan]Morn[/color] refuses to die! RESURRECTED with [color=green]%d[/color] HP!" % heal_amount)
+			else:
+				current_enemy_hp = heal_amount
+				active_enemy_card.update_health_ui(current_enemy_hp)
+				add_log("💀 The enemy defies death! RESURRECTED with [color=green]%d[/color] HP!" % heal_amount)
+			
+			active_effects.remove_at(i) # Mucize bir kere gerçekleşir, listeden siliyoruz.
+			return true
+	return false
+
+func check_explode_on_death(target: String, active_effects: Array[StatusEffect]):
+	for effect in active_effects:
+		if effect.effect_type == StatusEffect.Type.EXPLODE_ON_DEATH:
+			var explosion_damage = effect.power
+			if target == "enemy":
+				current_player_hp -= explosion_damage
+				active_player_card.update_health_ui(current_player_hp)
+				add_log("💥 The enemy explodes on death, dealing [color=orange]%d[/color] damage to you!" % explosion_damage)
+			else:
+				current_enemy_hp -= explosion_damage
+				active_enemy_card.update_health_ui(current_enemy_hp)
+				add_log("💥 You explode on death, dealing [color=orange]%d[/color] damage to the enemy!" % explosion_damage)
+			break
+
+func handle_player_defeat():
+	check_explode_on_death("player", player_active_effects)
+	add_log("\n[color=red]Defeat...[/color] Your Highscore: %d" % current_stage)
+	add_log("[color=yellow]System Reset... HP restored. Back to Stage 1.[/color]")
+	
+	current_stage = 1
+	current_player_hp = player_data.max_health
+	active_player_card.update_health_ui(current_player_hp)
+	update_ui()
+	spawn_new_enemy()
+	
+	fight_button.disabled = false
+	
+	if auto_fight_button.button_pressed:
+		add_log("[color=cyan]Auto-Fight is ON! Restarting battle in 1.5 seconds...[/color]")
+
+		await get_tree().create_timer(1.5).timeout
+
+		_on_fight_button_pressed()

@@ -43,8 +43,31 @@ func _on_buy_button_pressed():
 
     #dördüncü aşama, çekiliş
     for i in range(drop_count):
-        var random_index = randi() % shop_card_pool.size()
-        var pulled_card = shop_card_pool[random_index]
+		# 1. 0.0 ile 100.0 arasında devasa, küsuratlı bir zar at
+        var roll = randf_range(0.0, 100.0)
+        var target_rarity: CardData.Rarity
+		
+		# 2. Zarın düştüğü dilimi bul
+        if roll <= 60.0:
+            target_rarity = CardData.Rarity.COMMON     # %60 ihtimal (0 - 60 arası)
+        elif roll <= 94.9:
+            target_rarity = CardData.Rarity.RARE       # %34.9 ihtimal (60.1 - 94.9 arası)
+        elif roll <= 99.9:
+            target_rarity = CardData.Rarity.LEGENDARY  # %5 ihtimal (95.0 - 99.9 arası)
+        else:
+            target_rarity = CardData.Rarity.MYTHIC     # %0.1 ihtimal (99.9 - 100 arası)
+			
+		# 3. Tüm market havuzunu sadece o nadirlikteki kartları içerecek şekilde süz
+        var possible_cards = shop_card_pool.filter(func(card): return card.rarity == target_rarity)
+		
+		# o nadirlikte bir kart yoksa
+        if possible_cards.is_empty():
+		
+            possible_cards = shop_card_pool.filter(func(card): return card.rarity == CardData.Rarity.COMMON)
+			
+		# 4. Seçilen nadirlik havuzundan rastgele bir kart çek!
+        var random_index = randi() % possible_cards.size()
+        var pulled_card = possible_cards[random_index]
 
         if InventoryManager.owned_ability_cards.has(pulled_card):
             var refund_shards = 150

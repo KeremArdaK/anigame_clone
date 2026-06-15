@@ -2,14 +2,23 @@
 
 [ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="1_5ybfk"]
 [ext_resource type="Texture2D" uid="uid://bar1brd5inu2p" path="res://Textures/icons/Debuffs/bleeding.png" id="1_1360o"]
-[ext_resource type="Resource" uid="uid://c7csbbsa6pksd" path="res://Status Effects/burn.tres" id="2_1360o"]
-[ext_resource type="Resource" uid="uid://b5qs7jgnaitnw" path="res://Status Effects/damage_buff.tres" id="3_6tve1"]
 [ext_resource type="Script" uid="uid://dpb8ctob5ni15" path="res://Scripts/resource_card_data.gd" id="4_x68ph"]
+
+[sub_resource type="Resource" id="Resource_mmdpa"]
+script = ExtResource("1_5ybfk")
+name = "Leech"
+description = "Heals you based on your damage on hit."
+effect_type = 3
+power = 50
+duration = 9999
+metadata/_custom_type_script = "uid://ghy0pniysv4f"
 
 [resource]
 script = ExtResource("4_x68ph")
 card_name = "Blood Boil"
+card_description = "Heals player for %50 of their damage."
 card_texture = ExtResource("1_1360o")
-rarity = 1
-effects_to_apply = Array[ExtResource("1_5ybfk")]([ExtResource("2_1360o"), ExtResource("3_6tve1")])
+rarity = 2
+flavor_text = "My blood is boiling!"
+innate_effects = Array[ExtResource("1_5ybfk")]([SubResource("Resource_mmdpa")])
 metadata/_custom_type_script = "uid://dpb8ctob5ni15"

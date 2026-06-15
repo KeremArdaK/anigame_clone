@@ -4,9 +4,8 @@
 
 [resource]
 script = ExtResource("1_u6fv1")
-name = "Burn"
-description = "Burns enemies for 3 turn for X damage."
-effect_type = 1
-power = 15
+name = "Blindness"
+description = "Blinds enemies."
+power = 50
 duration = 3
 metadata/_custom_type_script = "uid://ghy0pniysv4f"
