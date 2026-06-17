@@ -4,7 +4,7 @@ class_name StatusEffect
 enum Type {
     BLIND, #saldırı ıskalar
     BURN, #her tur sonunda hasar verir
-    POISON, #her tur sonunda hasar verir, burn'dan farklı olarak iyileşmez
+    POISON, #her tur sonunda hasar verir
     LEECH, #saldırı yaparken rakibin canını çalar
     DAMAGE_BUFF, #saldırı gücünü artırır
     DEFENSE_BUFF, #savunma gücünü artırır

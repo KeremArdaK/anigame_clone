@@ -79,4 +79,5 @@ func _on_buy_button_pressed():
         
     
     result_label.text = "Pack Opened! You got: " + ", ".join(pulled_card_names)
+    PopupManager.show_message("Pack Opened! You got:" + ", ".join(pulled_card_names), Color.ALICE_BLUE)
 

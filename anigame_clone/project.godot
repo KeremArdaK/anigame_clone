@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 CardDatabase="*uid://bb1gq8dmpseqx"
 CurrencyManager="*uid://14p5evl2vnu6"
 InventoryManager="*uid://3l2kaxaowax5"
+PopupManager="*uid://bc87scwomvy2b"
 
 [physics]
 

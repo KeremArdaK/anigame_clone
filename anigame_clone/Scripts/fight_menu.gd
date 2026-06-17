@@ -160,10 +160,10 @@ func start_battle_loop():
 				
 				var shards_earned = 0
 				match enemy_data.rarity:
-					CardData.Rarity.COMMON: shards_earned = 3
-					CardData.Rarity.RARE: shards_earned = 6
-					CardData.Rarity.LEGENDARY: shards_earned = 15
-					CardData.Rarity.MYTHIC: shards_earned = 50
+					CardData.Rarity.COMMON: shards_earned = 9
+					CardData.Rarity.RARE: shards_earned = 18
+					CardData.Rarity.LEGENDARY: shards_earned = 45
+					CardData.Rarity.MYTHIC: shards_earned = 150
 				
 				CurrencyManager.add_shards(shards_earned)
 				add_log("[color=cyan]+%d Card Shard[/color] (Total: %d)" % [shards_earned, CurrencyManager.card_shards])
@@ -194,6 +194,7 @@ func start_battle_loop():
 				pass # Dirildik, savaşa devam!
 			else:
 				handle_player_defeat()
+				PopupManager.show_message("You died...", Color.DARK_RED)
 				break # Yenildik
 				
 		await get_tree().create_timer(0.8).timeout
@@ -246,7 +247,8 @@ func execute_player_turn():
 		for effect in player_active_on_hit_effects:
 			add_effect_to_enemy(effect.duplicate())
 
-		
+	await get_tree().create_timer(0.8).timeout
+
 	# --- 3. Durak: Tur sonu efektleri (SADECE OYUNCU İÇİN) ---
 	current_player_hp = process_turn_end_effects(current_player_hp, player_active_effects, player_data.card_name)
 	
@@ -418,7 +420,8 @@ func handle_player_defeat():
 	
 	if auto_fight_button.button_pressed:
 		add_log("[color=cyan]Auto-Fight is ON! Restarting battle in 1.5 seconds...[/color]")
+	PopupManager.show_message("AutoFight enabled!", Color.CYAN)
+	await get_tree().create_timer(1.5).timeout
 
-		await get_tree().create_timer(1.5).timeout
-
-		_on_fight_button_pressed()
+	_on_fight_button_pressed()
+		

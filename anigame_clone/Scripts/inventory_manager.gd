@@ -13,15 +13,16 @@ var owned_items: Array = []
 var max_equip_slots: int = 3
 
 func equip_card(card: ResourceCardData) -> bool:
-    if equipped_ability_cards.size() >= max_equip_slots:
-        print("ekipman slotu dolu")
+    if equipped_ability_cards.has(card):
         return false
-
-    if not equipped_ability_cards.has(card):
-        equipped_ability_cards.append(card)
-        return true
-    return false
-
+    
+    if equipped_ability_cards.size() >= max_equip_slots:
+        var _removed_card = equipped_ability_cards.pop_front()
+    
+    equipped_ability_cards.append(card)
+    PopupManager.show_message("Equipped: " + card.card_name, Color.FOREST_GREEN)
+    return true
+    
 func unequip_card(card: ResourceCardData):
     if equipped_ability_cards.has(card):
         equipped_ability_cards.erase(card)
