@@ -23,7 +23,6 @@ var shop_card_pool: Array[ResourceCardData] = [
 
 @onready var buy_button = %BuyButton
 @onready var card_texture = %CardTexture
-@onready var result_label = %ResultLabel
 
 func _ready():
     buy_button.pressed.connect(_on_buy_button_pressed)
@@ -31,7 +30,7 @@ func _ready():
 func _on_buy_button_pressed():
     #birinci aşama kontrol
     if CurrencyManager.card_shards < PACK_PRICE:
-        result_label.text = "Not enough shards! You need %d." % PACK_PRICE
+        #result_label.text = "Not enough shards! You need %d." % PACK_PRICE
         return
 
     #iknici aşama ödeme
@@ -78,6 +77,6 @@ func _on_buy_button_pressed():
             pulled_card_names.append(pulled_card.card_name)
         
     
-    result_label.text = "Pack Opened! You got: " + ", ".join(pulled_card_names)
+    #result_label.text = "Pack Opened! You got: " + ", ".join(pulled_card_names)
     PopupManager.show_message("Pack Opened! You got:" + ", ".join(pulled_card_names), Color.ALICE_BLUE)
 

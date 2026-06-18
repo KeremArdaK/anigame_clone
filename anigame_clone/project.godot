@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Anigame Clone"
-run/main_scene="uid://r3epaky07kxc"
+run/main_scene="uid://thj2o6qo7uch"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -22,12 +22,17 @@ CurrencyManager="*uid://14p5evl2vnu6"
 InventoryManager="*uid://3l2kaxaowax5"
 PopupManager="*uid://bc87scwomvy2b"
 
+[gui]
+
+theme/custom="uid://bqm61q3lihyke"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 rendering_device/driver.windows="d3d12"
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"

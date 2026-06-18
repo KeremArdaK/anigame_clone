@@ -1,0 +1,111 @@
+[gd_resource type="Theme" format=3 uid="uid://bqm61q3lihyke"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_58jnp"]
+bg_color = Color(0.053117648, 0.084994115, 0.14507502, 1)
+border_width_left = 70
+border_width_right = 70
+border_color = Color(0.05490196, 0.08627451, 0.14509805, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gsqoc"]
+bg_color = Color(0.2290338, 0.30901343, 0.4593789, 1)
+border_width_left = 70
+border_width_right = 70
+border_color = Color(0.12355893, 0.17569137, 0.27389687, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_470mv"]
+bg_color = Color(0.1764706, 0.24313726, 0.36862746, 1)
+border_width_left = 70
+border_width_right = 70
+border_color = Color(0.10116104, 0.13222337, 0.23766553, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a2l2q"]
+bg_color = Color(0.101960786, 0.14117648, 0.23137255, 1)
+border_width_left = 70
+border_width_right = 70
+border_color = Color(0.08432277, 0.11921064, 0.19947454, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_52mx2"]
+bg_color = Color(0.043137256, 0.0627451, 0.12941177, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0omi4"]
+bg_color = Color(0.043137256, 0.0627451, 0.12941177, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_py0i1"]
+bg_color = Color(0.043137256, 0.0627451, 0.12941177, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_466ly"]
+bg_color = Color(0.23137255, 0.31764707, 0.47843137, 1)
+border_width_left = 25
+border_width_right = 25
+border_color = Color(0.13807672, 0.19838575, 0.3110007, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sxwih"]
+bg_color = Color(0.14117648, 0.2, 0.32941177, 1)
+border_width_left = 25
+border_width_right = 25
+border_color = Color(0.101960786, 0.14117648, 0.23137255, 1)
+border_blend = true
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rt4o7"]
+bg_color = Color(0.10045155, 0.14741784, 0.250833, 1)
+border_width_left = 25
+border_width_right = 25
+border_color = Color(0.101960786, 0.14117648, 0.23137255, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7hjjl"]
+bg_color = Color(0.101960786, 0.14117648, 0.23137255, 1)
+
+[resource]
+Button/styles/disabled = SubResource("StyleBoxFlat_58jnp")
+Button/styles/hover = SubResource("StyleBoxFlat_gsqoc")
+Button/styles/normal = SubResource("StyleBoxFlat_470mv")
+Button/styles/pressed = SubResource("StyleBoxFlat_a2l2q")
+Label/colors/font_color = Color(0.8862745, 0.9098039, 0.9411765, 1)
+Label/styles/normal = null
+LineEdit/styles/focus = null
+LineEdit/styles/normal = SubResource("StyleBoxFlat_52mx2")
+LineEdit/styles/read_only = null
+Panel/styles/panel = SubResource("StyleBoxFlat_0omi4")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_py0i1")
+TabContainer/styles/tab_hovered = SubResource("StyleBoxFlat_466ly")
+TabContainer/styles/tab_selected = SubResource("StyleBoxFlat_sxwih")
+TabContainer/styles/tab_unselected = SubResource("StyleBoxFlat_rt4o7")
+TabContainer/styles/tabbar_background = SubResource("StyleBoxFlat_7hjjl")

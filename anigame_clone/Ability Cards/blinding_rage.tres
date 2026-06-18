@@ -24,7 +24,7 @@ metadata/_custom_type_script = "uid://ghy0pniysv4f"
 [resource]
 script = ExtResource("4_jq150")
 card_name = "Blinding Rage"
-card_description = "%15 dmg buff."
+card_description = "%15 [color=red]dmg[/color] buff."
 card_texture = ExtResource("1_nhtfd")
 rarity = 1
 innate_effects = Array[ExtResource("1_cwiq6")]([SubResource("Resource_x7iq8")])

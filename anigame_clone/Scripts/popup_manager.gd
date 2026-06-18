@@ -61,7 +61,7 @@ func show_message(text: String, accent_color: Color = Color.WHITE):
 	# Dış Taşıyıcı (Horizontal Box): Panelin ekranın en tepesinde yayılmasını engeller, 
 	# içeriği ortada tutar.
 	var hbox = HBoxContainer.new()
-	hbox.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	hbox.alignment = BoxContainer.ALIGNMENT_CENTER
 	# Başlangıçta tamamen saydam
 	hbox.modulate.a = 0 
 	

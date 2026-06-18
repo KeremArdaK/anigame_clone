@@ -82,3 +82,7 @@ bbcode_enabled = true
 [node name="EnemySide" type="VBoxContainer" parent="FightMenu/MarginContainer/HBoxContainer" unique_id=852775805]
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="Control" type="Control" parent="FightMenu/MarginContainer/HBoxContainer/EnemySide" unique_id=43009538]
+layout_mode = 2
+size_flags_vertical = 10
