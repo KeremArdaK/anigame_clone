@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="TalentResource" format=3 uid="uid://hm0s5geqpxiq"]
+
+[ext_resource type="Script" uid="uid://v20cujdoe4pd" path="res://talent_resource.gd" id="1_o2ci7"]
+[ext_resource type="Texture2D" uid="uid://bd3rqvhnm1pap" path="res://icon.svg" id="2_sugjq"]
+
+[resource]
+script = ExtResource("1_o2ci7")
+id = "0004"
+talent_name = "Defensive Aura"
+talent_icon = ExtResource("2_sugjq")
+effect_value = 10.0
+cost = 40
+metadata/_custom_type_script = "uid://v20cujdoe4pd"

@@ -9,8 +9,9 @@ script = ExtResource("1_7k4u0")
 name = "Burn"
 description = "Burns enemies for 3 turn for X damage."
 effect_type = 1
-power = 15
-duration = 3
+stack_behavior = 0
+power = 5
+duration = 9999
 metadata/_custom_type_script = "uid://ghy0pniysv4f"
 
 [resource]

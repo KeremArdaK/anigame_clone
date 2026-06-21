@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Anigame Clone"
-run/main_scene="uid://thj2o6qo7uch"
+run/main_scene="uid://d1yko6hrcyigs"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -21,6 +21,8 @@ CardDatabase="*uid://bb1gq8dmpseqx"
 CurrencyManager="*uid://14p5evl2vnu6"
 InventoryManager="*uid://3l2kaxaowax5"
 PopupManager="*uid://bc87scwomvy2b"
+SaveManager="*uid://co83m3hj6i7tl"
+GameManager="*uid://bpjp3tlv13gyc"
 
 [gui]
 

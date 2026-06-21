@@ -4,11 +4,12 @@
 [ext_resource type="Texture2D" uid="uid://lmto0emubsxt" path="res://Textures/AbilityCardTextures/explosive-materials.svg" id="1_ay1wj"]
 [ext_resource type="Script" uid="uid://dpb8ctob5ni15" path="res://Scripts/resource_card_data.gd" id="4_or5dk"]
 
-[sub_resource type="Resource" id="Resource_2r6ps"]
+[sub_resource type="Resource" id="Resource_ay1wj"]
 script = ExtResource("1_27bvc")
 name = "Explode On Death"
 description = "Makes you explode on death"
 effect_type = 7
+stack_behavior = 0
 power = 75
 duration = 9999
 metadata/_custom_type_script = "uid://ghy0pniysv4f"
@@ -19,5 +20,5 @@ card_name = "Kamikaze Protocol"
 card_description = "Explode on death."
 card_texture = ExtResource("1_ay1wj")
 rarity = 1
-innate_effects = Array[ExtResource("1_27bvc")]([SubResource("Resource_2r6ps")])
+innate_effects = Array[ExtResource("1_27bvc")]([SubResource("Resource_ay1wj")])
 metadata/_custom_type_script = "uid://dpb8ctob5ni15"

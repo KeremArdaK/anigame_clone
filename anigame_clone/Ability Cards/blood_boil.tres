@@ -9,6 +9,7 @@ script = ExtResource("1_5ybfk")
 name = "Leech"
 description = "Heals you based on your damage on hit."
 effect_type = 3
+stack_behavior = 0
 power = 50
 duration = 9999
 metadata/_custom_type_script = "uid://ghy0pniysv4f"

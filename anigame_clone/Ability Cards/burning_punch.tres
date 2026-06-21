@@ -9,6 +9,7 @@ script = ExtResource("1_hd32n")
 name = "Burn"
 description = "Burns enemies for 3 turn for X damage."
 effect_type = 1
+stack_behavior = 0
 power = 15
 duration = 9999
 metadata/_custom_type_script = "uid://ghy0pniysv4f"

@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bobg8dq8ss85h" path="res://Textures/battle-gear.png" id="2_ygwp1"]
 [ext_resource type="Texture2D" uid="uid://cdce07algan50" path="res://Textures/open-treasure-chest.png" id="3_afxw2"]
 [ext_resource type="PackedScene" uid="uid://rcl2kyft0fsd" path="res://Scenes/Menus/shop_menu.tscn" id="3_xmma2"]
+[ext_resource type="PackedScene" uid="uid://dkhpb4aycxmiw" path="res://Scenes/Menus/prestige_menu.tscn" id="7_ygwp1"]
 
 [node name="Control" type="Control" unique_id=384163256]
 custom_minimum_size = Vector2(50, 50)
@@ -47,3 +48,8 @@ visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 metadata/_tab_name = ""
+
+[node name="PrestigeMenu" parent="TabContainer" unique_id=972778005 instance=ExtResource("7_ygwp1")]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 3

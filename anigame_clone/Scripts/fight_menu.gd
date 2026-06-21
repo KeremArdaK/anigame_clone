@@ -24,15 +24,18 @@ var player_data: CardData
 var enemy_data: CardData
 
 var is_enemy_blinded: bool = false
-var current_stage: int = 1
 
 var active_player_card : Control
 var active_enemy_card : Control
 
 const ENEMY_POOL = [
 	"skeleton", "goblin", "orc", "zombie", "wolf", "witch", 
-	"vampire", "slime", "ghost", "demon"
+	"vampire", "slime", "ghost"
 ]
+
+const BOSS_POOL = ["demon", "lich"] 
+
+const ENEMIES_PER_STAGE = 10
 
 # --- LOG YÖNETİM SİSTEMİ ---
 var log_history: Array[String] = []
@@ -44,6 +47,26 @@ func _ready() -> void:
 	
 	setup_initial_battlefield()
 	fight_button.pressed.connect(_on_fight_button_pressed)
+
+	GameManager.prestige_performed.connect(_on_prestige_performed)
+
+func _on_prestige_performed():
+	# Eski savaştan kalan logları temizle ve sıfırdan başla
+	log_history.clear()
+	add_log("[i][color=purple]Prestige complete! Starting anew with cosmic power...[/color][/i]")
+	
+	# Morn'un canını ve başlangıç durumunu ayarla, kuşanılan kart arayüzünü sıfırla
+	current_player_hp = player_data.max_health
+	player_active_effects.clear()
+	player_active_on_hit_effects.clear()
+	
+	# Arayüzü 1. stage verilerine göre güncelle ve ilk common düşmanı çağır
+	update_ui()
+	update_equipped_abilities_ui()
+	spawn_new_enemy()
+	
+	# Eğer döngü kilitlendiyse dövüş butonunu tekrar aktif et
+	fight_button.disabled = false
 
 # --- ÖZEL LOG FONKSİYONU ---
 func add_log(message: String):
@@ -73,8 +96,14 @@ func setup_initial_battlefield():
 		player_active_effects.append(effect.duplicate())
 	
 	for ability_card in InventoryManager.equipped_ability_cards:
-		for effect in ability_card.effects_to_apply:
-			player_active_effects.append(effect.duplicate()) 
+		# 1. Kuşanılan kartın pasif özelliklerini (innate) ekle
+		for effect in ability_card.innate_effects:
+			player_active_effects.append(effect.duplicate())
+			
+		# 2. Kuşanılan kartın vuruş etkilerini (on_hit) ekle
+		for effect in ability_card.on_hit_effects:
+			player_active_on_hit_effects.append(effect.duplicate())
+			
 	spawn_new_enemy()
 	
 	add_log("[i]Ready to [color=red]FIGHT![/color][/i]")
@@ -83,29 +112,38 @@ func setup_initial_battlefield():
 	update_equipped_abilities_ui()
 
 func spawn_new_enemy():
-	# 1. O anki dalgaya (stage) uygun düşmanları toplayacağımız geçici havuz
-	var valid_enemies: Array[String] = []
+	# 10. stage'in katları ve 10. düşman ise Boss gelir
+	var is_boss_encounter = (GameManager.current_stage % 10 == 0) and (GameManager.defeated_enemies_on_current_stage == ENEMIES_PER_STAGE - 1)
 	
-	# 2. Tüm düşman listesini tara ve kurallara uyanları havuza at
-	for enemy_name in ENEMY_POOL:
-		var data = CardDatabase.get_card(enemy_name)
+	var random_enemy_name = ""
+	
+	if is_boss_encounter:
+		# Boss havuzundan rastgele birini seç
+		random_enemy_name = BOSS_POOL[randi() % BOSS_POOL.size()]
+		add_log("\n[color=red]*** BOSS ENCOUNTER! ***[/color]")
+	else:
+		# Normal düşman havuzunu kurallara göre filtrele
+		var valid_enemies: Array[String] = []
+		for enemy_name in ENEMY_POOL:
+			var data = CardDatabase.get_card(enemy_name)
+			
+			# KURAL: 20 ve aşağısı sadece Common
+			if GameManager.current_stage <= 20 and data.rarity != CardData.Rarity.COMMON:
+				continue
+			# KURAL: 21-40 arası Common + Rare
+			if GameManager.current_stage > 20 and GameManager.current_stage <= 40 and (data.rarity == CardData.Rarity.LEGENDARY or data.rarity == CardData.Rarity.MYTHIC):
+				continue
+			# KURAL: 41-49 arası Mythic HARİÇ hepsi (Geçiş dönemi)
+			if GameManager.current_stage > 40 and GameManager.current_stage < 50 and data.rarity == CardData.Rarity.MYTHIC:
+				continue
+				
+			valid_enemies.append(enemy_name)
 		
-		# KURAL 1: Stage 30'dan önce Legendary gelemez!
-		if data.rarity == CardData.Rarity.LEGENDARY and current_stage < 30:
-			continue # Bu düşmanı atla, havuza koyma
-			
-		# KURAL 2: Stage 40'tan önce Mythic gelemez!
-		if data.rarity == CardData.Rarity.MYTHIC and current_stage < 40:
-			continue 
-			
-		# Kuralları geçenleri geçerli havuza ekle
-		valid_enemies.append(enemy_name)
-	
-	# 3. Artık rastgele seçimi sadece kurallardan geçmiş "valid_enemies" içinden yapıyoruz
-	var random_enemy_name = valid_enemies[randi() % valid_enemies.size()]
+		# Geçerli havuzdan rastgele seç
+		random_enemy_name = valid_enemies[randi() % valid_enemies.size()]
+
 	enemy_data = CardDatabase.get_card(random_enemy_name)
 	
-	# ... (Geri kalan render_data ve can yükleme kısımları senin kodunla aynı)
 	active_enemy_card.render_data(enemy_data)
 	current_enemy_hp = enemy_data.max_health
 	
@@ -113,8 +151,14 @@ func spawn_new_enemy():
 	for effect in enemy_data.innate_effects:
 		enemy_active_effects.append(effect.duplicate())
 	
-	add_log("\n[color=yellow]=== STAGE %d ===[/color]" % current_stage)
-	add_log("[color=red]New enemy %s spawned![/color]" % enemy_data.card_name)
+	add_log("\n[color=yellow]=== STAGE %d ===[/color]" % GameManager.current_stage)
+	
+	if is_boss_encounter:
+		add_log("[color=darkred]The mighty %s blocks your path![/color]" % enemy_data.card_name)
+	else:
+		add_log("[color=red]Enemy %s spawned![/color]" % enemy_data.card_name)
+		
+	update_ui()
 
 func _on_fight_button_pressed():
 	fight_button.disabled = true
@@ -168,6 +212,20 @@ func start_battle_loop():
 				CurrencyManager.add_shards(shards_earned)
 				add_log("[color=cyan]+%d Card Shard[/color] (Total: %d)" % [shards_earned, CurrencyManager.card_shards])
 				
+
+				GameManager.defeated_enemies_on_current_stage += 1
+				GameManager.total_enemies_defeated += 1
+
+				if GameManager.defeated_enemies_on_current_stage >= ENEMIES_PER_STAGE:
+					GameManager.current_stage += 1
+					GameManager.defeated_enemies_on_current_stage = 0
+					
+					# En yüksek stage rekorunu güncelle (Prestige için lazım olacak)
+					if GameManager.current_stage > GameManager.highest_stage:
+						GameManager.highest_stage = GameManager.current_stage
+						
+					add_log("[color=gold]Stage Cleared! Advancing to Stage %d[/color]" % GameManager.current_stage)
+
 				# --- SİNSİ PATLAMA KONTROLÜ ---
 				# Düşman patlayıp o hasarla bizi öldürmüş olabilir mi?
 				if current_player_hp <= 0:
@@ -177,7 +235,6 @@ func start_battle_loop():
 						handle_player_defeat()
 						break # Savaş bitti, döngüden çık
 						
-				current_stage += 1
 				update_ui()
 				await get_tree().create_timer(1.5).timeout
 				
@@ -200,28 +257,71 @@ func start_battle_loop():
 		await get_tree().create_timer(0.8).timeout
 
 func add_effect_to_enemy(new_effect: StatusEffect):
-	# 1. Sepette bu efekt zaten var mı diye kontrol et
-	for existing_effect in enemy_active_effects:
-		if existing_effect.name == new_effect.name:
-			# Varsa, yeni kopya ekleme! Sadece süresini (duration) baştaki haline sıfırla/yenile
-			existing_effect.duration = new_effect.duration
-			add_log("🔄 The duration of [color=yellow]%s[/color] on Enemy was refreshed!" % new_effect.name)
-			return # Fonksiyonu burada kes, işlemi bitir
-			
-	# 2. Eğer sepette yoksa, yepyeni bir hastalık olarak ekle
-	enemy_active_effects.append(new_effect)
-	add_log("Enemy is affected by [color=yellow]%s![/color]" % new_effect.name)
+	match new_effect.stack_behavior:
+
+		StatusEffect.StackBehavior.INDEPENDENT:
+			enemy_active_effects.append(new_effect)
+			add_log("Enemy is affected by [color=yellow]%s![/color]" % new_effect.name)
+
+		StatusEffect.StackBehavior.STACK:
+			var found = false
+			for existing in enemy_active_effects:
+				if existing.effect_type == new_effect.effect_type:
+					existing.power += new_effect.power
+					existing.duration = max(existing.duration, new_effect.duration)
+					add_log("📈 [color=yellow]%s[/color] stacked! Total power: %d" % [new_effect.name, existing.power])
+					found = true
+					break
+			if not found:
+				enemy_active_effects.append(new_effect)
+				add_log("Enemy is affected by [color=yellow]%s![/color]" % new_effect.name)
+		
+		StatusEffect.StackBehavior.REFRESH:
+			# Blind gibi: aynı isimde biri varsa sadece süreyi yenile
+			var found = false
+			for existing in enemy_active_effects:
+				if existing.name == new_effect.name:
+					existing.duration = new_effect.duration
+					add_log("🔄 [color=yellow]%s[/color] refreshed!" % new_effect.name)
+					found = true
+					break
+			if not found:
+				enemy_active_effects.append(new_effect)
+				add_log("Enemy is affected by [color=yellow]%s![/color]" % new_effect.name)
+
+	
 
 func add_effect_to_player(new_effect: StatusEffect):
-	# Aynı mantığı oyuncu için de kuruyoruz
-	for existing_effect in player_active_effects:
-		if existing_effect.name == new_effect.name:
-			existing_effect.duration = new_effect.duration
-			add_log("🔄 The duration of [color=yellow]%s[/color] on You was refreshed!" % new_effect.name)
-			return 
-			
-	player_active_effects.append(new_effect)
-	add_log("You are affected by [color=yellow]%s![/color]" % new_effect.name)
+	match new_effect.stack_behavior:
+
+		StatusEffect.StackBehavior.INDEPENDENT:
+			player_active_effects.append(new_effect)
+			add_log("Morn is affected by [color=yellow]%s![/color]" % new_effect.name)
+
+		StatusEffect.StackBehavior.STACK:
+			var found = false
+			for existing in player_active_effects:
+				if existing.effect_type == new_effect.effect_type:
+					existing.power += new_effect.power
+					existing.duration = max(existing.duration, new_effect.duration)
+					add_log("📈 [color=yellow]%s[/color] stacked! Total power: %d" % [new_effect.name, existing.power])
+					found = true
+					break
+			if not found:
+				player_active_effects.append(new_effect)
+				add_log("Morn is affected by [color=yellow]%s![/color]" % new_effect.name)
+		
+		StatusEffect.StackBehavior.REFRESH:
+			var found = false
+			for existing in player_active_effects:
+				if existing.name == new_effect.name:
+					existing.duration = new_effect.duration
+					add_log("🔄 [color=yellow]%s[/color] refreshed!" % new_effect.name)
+					found = true
+					break
+			if not found:
+				player_active_effects.append(new_effect)
+				add_log("Morn is affected by [color=yellow]%s![/color]" % new_effect.name)
 
 func execute_player_turn():
 	add_log("\n[color=blue]%s[/color] attacks!" % player_data.card_name)
@@ -286,21 +386,22 @@ func execute_enemy_turn():
 	active_enemy_card.update_health_ui(current_enemy_hp)
 
 func update_ui():
-	stage_info.text = "Stage: %d" % current_stage
+	stage_info.text = "Stage: %d (%d/%d)" % [GameManager.current_stage, GameManager.defeated_enemies_on_current_stage + 1, ENEMIES_PER_STAGE]
 	shard_info.text = "Card Shards: %d" % CurrencyManager.card_shards
 
 func apply_pre_attack_buffs(base_damage: int, attacker_effects: Array, defender_effects: Array):
-	var final_damage = base_damage
+	var final_damage = float(base_damage)
 
 	for effects in attacker_effects:
 		if effects.effect_type == StatusEffect.Type.DAMAGE_BUFF:
-			var bonus_damage = (base_damage * effects.power) / 100
+			var bonus_damage = (base_damage * effects.power) / 100.0
 			final_damage += bonus_damage
 	for effects in defender_effects:
 		if effects.effect_type == StatusEffect.Type.DEFENSE_BUFF:
-			var blocked_damage = (base_damage * effects.power) / 100
+			var blocked_damage = (base_damage * effects.power) / 100.0
 			final_damage -= blocked_damage
-	return final_damage
+
+	return int(round(final_damage))
 
 func process_turn_end_effects(target_hp: int, active_effects: Array[StatusEffect], target_name: String) -> int:
 	var current_hp = target_hp
@@ -407,10 +508,12 @@ func check_explode_on_death(target: String, active_effects: Array[StatusEffect])
 
 func handle_player_defeat():
 	check_explode_on_death("player", player_active_effects)
-	add_log("\n[color=red]Defeat...[/color] Your Highscore: %d" % current_stage)
-	add_log("[color=yellow]System Reset... HP restored. Back to Stage 1.[/color]")
+	add_log("\n[color=red]Defeat...[/color]")
+	add_log("[color=yellow]Morn refuses to yield. Re-engaging from Stage %d, Enemy 1.[/color]" % GameManager.current_stage)
 	
-	current_stage = 1
+	# Artık stage = 1 yapmıyoruz! Sadece o stage'in başına (0. düşmana) dönüyoruz.
+	GameManager.defeated_enemies_on_current_stage = 0
+	
 	current_player_hp = player_data.max_health
 	active_player_card.update_health_ui(current_player_hp)
 	update_ui()
@@ -419,9 +522,8 @@ func handle_player_defeat():
 	fight_button.disabled = false
 	
 	if auto_fight_button.button_pressed:
-		add_log("[color=cyan]Auto-Fight is ON! Restarting battle in 1.5 seconds...[/color]")
+		add_log("[color=cyan]Auto-Fight is ON!\nRestarting battle in 1.5 seconds...[/color]")
 		PopupManager.show_message("AutoFight enabled!", Color.CYAN)
 		await get_tree().create_timer(1.5).timeout
-
 		_on_fight_button_pressed()
 		

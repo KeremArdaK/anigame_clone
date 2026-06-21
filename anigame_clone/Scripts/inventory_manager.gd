@@ -1,5 +1,7 @@
 extends Node
 
+signal inventory_updated
+
 # Envanterdeki bütün kartlar
 var owned_ability_cards: Array[ResourceCardData] = []
 

@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://c7ppdplyqlplp"]
+
+[ext_resource type="Script" uid="uid://ckg7mt5i3qxbo" path="res://skill_node.gd" id="1_5pg7v"]
+[ext_resource type="Texture2D" uid="uid://bd3rqvhnm1pap" path="res://icon.svg" id="1_61twg"]
+
+[node name="TextureButton" type="TextureButton" unique_id=417701967]
+offset_right = 40.0
+offset_bottom = 40.0
+texture_normal = ExtResource("1_61twg")
+script = ExtResource("1_5pg7v")
+
+[node name="Line2D" type="Line2D" parent="." unique_id=519687571]
+top_level = true
+z_index = -1
+default_color = Color(0.15919113, 0.15919113, 0.15919113, 1)

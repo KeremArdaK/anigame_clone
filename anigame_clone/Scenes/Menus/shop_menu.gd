@@ -75,7 +75,7 @@ func _on_buy_button_pressed():
 		else:
 			InventoryManager.owned_ability_cards.append(pulled_card)
 			pulled_card_names.append(pulled_card.card_name)
-		
+			InventoryManager.inventory_updated.emit()
 	
 	#result_label.text = "Pack Opened! You got: " + ", ".join(pulled_card_names)
 	PopupManager.show_message("Pack Opened! You got:" + ", ".join(pulled_card_names), Color.ALICE_BLUE)

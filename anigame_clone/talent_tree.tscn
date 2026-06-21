@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://des8y6qwokutc"]
+
+[ext_resource type="Script" uid="uid://bedh54x1ma35j" path="res://skill_tree_manager.gd" id="1_7jiqo"]
+[ext_resource type="Script" uid="uid://b6jsqjcx7eolh" path="res://camera_2d.gd" id="1_khpiu"]
+[ext_resource type="PackedScene" uid="uid://c7ppdplyqlplp" path="res://talent_node.tscn" id="4_ct48k"]
+
+[node name="SkillTreeManager" type="Node2D" unique_id=804878242]
+script = ExtResource("1_7jiqo")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1295610737]
+position_smoothing_enabled = true
+script = ExtResource("1_khpiu")
+
+[node name="TextureButton" parent="." unique_id=417701967 instance=ExtResource("4_ct48k")]
+offset_left = -56.0
+offset_top = 184.0
+offset_right = 72.0
+offset_bottom = 312.0
+
+[node name="TextureButton" parent="TextureButton" unique_id=813253323 instance=ExtResource("4_ct48k")]
+layout_mode = 0
+offset_left = 216.0
+offset_top = -184.0
+offset_right = 344.0
+offset_bottom = -56.0
+
+[node name="TextureButton5" parent="TextureButton/TextureButton" unique_id=48073378 instance=ExtResource("4_ct48k")]
+layout_mode = 0
+offset_left = -368.0
+offset_top = -232.0
+offset_right = -240.0
+offset_bottom = -104.0
+
+[node name="TextureButton6" parent="TextureButton/TextureButton" unique_id=2003482805 instance=ExtResource("4_ct48k")]
+layout_mode = 0
+offset_left = -16.0
+offset_top = -232.0
+offset_right = 112.0
+offset_bottom = -104.0
+
+[node name="TextureButton7" parent="TextureButton/TextureButton" unique_id=1466597901 instance=ExtResource("4_ct48k")]
+layout_mode = 0
+offset_left = 200.0
+offset_top = -232.0
+offset_right = 328.0
+offset_bottom = -104.0
+
+[node name="TextureButton3" parent="TextureButton" unique_id=149633316 instance=ExtResource("4_ct48k")]
+layout_mode = 0
+offset_left = -232.0
+offset_top = -184.0
+offset_right = -104.0
+offset_bottom = -56.0
