@@ -5,7 +5,7 @@ signal shards_updated(new_amount: int)
 signal prestige_updated(new_amount: int)
 
 var card_shards: int = 0
-var prestige_points: int = 0
+var prestige_points: int = 100
 
 # Para ekleme fonksiyonu
 func add_shards(amount: int):

@@ -3,8 +3,6 @@ extends Node
 const SAVE_FILE = "user://idling_tower_save.save"
 
 func _ready() -> void:
-    # Godot'nun Alt+F4 veya X tuşuyla anında kapanmasını engelliyoruz.
-    # Kapanma işlemini _notification içinde kendimiz yöneteceğiz.
     get_tree().set_auto_accept_quit(false)
     
     # Auto-save için bir Timer oluşturup başlatıyoruz (Her 60 saniyede bir)
@@ -29,7 +27,8 @@ func save_game():
         "max_equip_slots": InventoryManager.max_equip_slots,
         "current_stage": GameManager.current_stage,
         "owned_cards_paths": [],
-        "equipped_cards_paths": []
+        "equipped_cards_paths": [],
+        "unlocked_talents": GameManager.unlocked_talents
     }
 
     # Sahip olunan kartların dosya yolunu listeye ekliyoruz
@@ -56,7 +55,15 @@ func load_game():
     # Parayı geri yükle ve UI'yi güncellemek için sinyali tetikle
     CurrencyManager.card_shards = saved_data["shards"]
     CurrencyManager.shards_updated.emit(CurrencyManager.card_shards) 
-    
+
+    # Açılmış yetenekleri kayıt dosyasından geri yüklüyoruz
+    if saved_data.has("unlocked_talents"):
+        GameManager.unlocked_talents = saved_data["unlocked_talents"]
+    else:
+        # Eğer oyuncunun bilgisayarında eski bir kayıt dosyası varsa ve içinde henüz 
+        # "unlocked_talents" anahtarı yoksa, oyunun çökmemesi için temiz, boş bir dizi tanımlıyoruz.
+        GameManager.unlocked_talents = []
+
     # Envanter sınırını geri yükle
     InventoryManager.max_equip_slots = saved_data["max_equip_slots"]
     
@@ -77,6 +84,13 @@ func load_game():
         GameManager.current_stage = saved_data["current_stage"]
 
     print("Oyun başarıyla yüklendi!")
+
+    if saved_data.has("unlocked_talents"):
+        GameManager.unlocked_talents = saved_data["unlocked_talents"]
+	    # İŞTE BURASI: Kayıt dosyasından ID'ler yüklenir yüklenmez çarpanları inşa et!
+        GameManager.rebuild_talent_buffs() 
+    else:
+        GameManager.unlocked_talents = []
 
 func _on_auto_save_timeout() -> void:
     print("Otomatik kayıt alınıyor...")

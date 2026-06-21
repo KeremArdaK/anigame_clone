@@ -8,6 +8,11 @@ var defeated_enemies_on_current_stage: int = 0
 var total_enemies_defeated: int = 0 # Bu kalıcı, sıfırlanmayacak!
 var enemies_defeated_on_this_run: int = 0
 var highest_stage: int = 1
+var unlocked_talents: Array = []
+
+var talent_damage_modifier: float = 0.0      # Örn: %50 hasar artışı için 50.0
+var talent_defense_modifier: float = 0.0     # Örn: %20 defans artışı için 20.0
+var talent_prestige_multiplier: float = 1.0  # Prestij puanı çarpanı
 
 func do_prestige():
 	# Oyuncu en azından 10. stage'e ulaşmış olmalı
@@ -43,3 +48,37 @@ func do_prestige():
 	
 	# 7. Savaş ekranının kendini yenilemesi için sinyali ateşle
 	prestige_performed.emit()
+
+func rebuild_talent_buffs() -> void:
+	# Önce tüm havuzu sıfırla (Overlapping/Üst üste binme hatalarını önlemek için)
+	talent_damage_modifier = 0.0
+	talent_defense_modifier = 0.0
+	talent_prestige_multiplier = 1.0
+	
+	# Açılmış tüm yetenek ID'lerini dönüyoruz
+	for talent_id in unlocked_talents:
+		var path = "res://Talents/" + talent_id + ".tres"
+		
+		# Dosya yolunun güvenliğini kontrol et
+		if ResourceLoader.exists(path):
+			var resource = load(path) as TalentResource
+			if resource:
+				_apply_individual_buff(resource)
+				
+	print("Yetenek Buffları Başarıyla Güncellendi!")
+	print("Bonus Hasar: %", talent_damage_modifier, " | Bonus Defans: %", talent_defense_modifier)
+
+# Yeteneğin türüne göre ilgili global değişkeni besleyen iç fonksiyon
+func _apply_individual_buff(resource: TalentResource) -> void:
+	# İster ID bazlı, ister ileride ekleyeceğin bir stat_type enum'ına göre ayırabilirsin:
+	match resource.id:
+		"berserk":
+			talent_damage_modifier += resource.effect_value
+		"defensive_aura":
+			talent_defense_modifier += resource.effect_value
+		"fortune":
+			# % etkisini çarpana dönüştürüyoruz (Örn: etki 15 ise çarpan 1.15 olur)
+			talent_prestige_multiplier += (resource.effect_value / 100.0)
+		"perserverance":
+			# Azim yeteneği için hangi statı beslemek istiyorsan:
+			talent_damage_modifier += resource.effect_value

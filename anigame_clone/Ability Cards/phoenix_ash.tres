@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="1_e3fda"]
 [ext_resource type="Texture2D" uid="uid://b6dscqhwpcu72" path="res://Textures/AbilityCardTextures/hawk-emblem.svg" id="1_ppnjl"]
+[ext_resource type="Resource" uid="uid://c7csbbsa6pksd" path="res://Status Effects/burn.tres" id="3_e3fda"]
 [ext_resource type="Script" uid="uid://dpb8ctob5ni15" path="res://Scripts/resource_card_data.gd" id="4_520ku"]
 
 [sub_resource type="Resource" id="Resource_ppnjl"]
@@ -14,16 +15,6 @@ power = 25
 duration = 9999
 metadata/_custom_type_script = "uid://ghy0pniysv4f"
 
-[sub_resource type="Resource" id="Resource_e3fda"]
-script = ExtResource("1_e3fda")
-name = "Burn"
-description = "Burns enemies for 3 turn for X damage."
-effect_type = 1
-stack_behavior = 0
-power = 15
-duration = 9999
-metadata/_custom_type_script = "uid://ghy0pniysv4f"
-
 [resource]
 script = ExtResource("4_520ku")
 card_name = "Phoenix Ash"
@@ -31,5 +22,6 @@ card_description = "Burns enemies and resurrects player."
 card_texture = ExtResource("1_ppnjl")
 rarity = 2
 flavor_text = "When you die, you ascend from your ashes."
-innate_effects = Array[ExtResource("1_e3fda")]([SubResource("Resource_ppnjl"), SubResource("Resource_e3fda")])
+innate_effects = Array[ExtResource("1_e3fda")]([SubResource("Resource_ppnjl")])
+on_hit_effects = Array[ExtResource("1_e3fda")]([ExtResource("3_e3fda")])
 metadata/_custom_type_script = "uid://dpb8ctob5ni15"

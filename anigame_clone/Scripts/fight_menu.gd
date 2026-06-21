@@ -327,7 +327,8 @@ func execute_player_turn():
 	add_log("\n[color=blue]%s[/color] attacks!" % player_data.card_name)
 
 	# --- 1. Durak: Saldırı öncesi buff/debufflar ---
-	var final_damage = apply_pre_attack_buffs(player_data.attack_damage, player_active_effects, enemy_active_effects)
+	var first_damage = apply_pre_attack_buffs(player_data.attack_damage, player_active_effects, enemy_active_effects) 
+	var final_damage = int(round(first_damage * (1.0 + GameManager.talent_damage_modifier / 100.0)))
 
 	# --- 2. Durak: Blind ve Leech kontrolü ---
 	var hit_data = check_blind_and_leech(player_active_effects, player_data.card_name, final_damage)
@@ -359,7 +360,9 @@ func execute_enemy_turn():
 
 	# --- 1. Durak: Saldırı öncesi buff/debufflar ---
 	# DİKKAT: Saldıran düşman olduğu için enemy_active_effects ilk yazılır!
-	var final_damage = apply_pre_attack_buffs(enemy_data.attack_damage, enemy_active_effects, player_active_effects)
+	var first_damage = apply_pre_attack_buffs(enemy_data.attack_damage, enemy_active_effects, player_active_effects)
+	var defense_multiplier = 1.0 - (GameManager.talent_defense_modifier / 100.0)
+	var final_damage = int(round(first_damage * defense_multiplier))
 
 	# --- 2. Durak: Blind ve Leech kontrolü ---
 	var hit_data = check_blind_and_leech(enemy_active_effects, enemy_data.card_name, final_damage)
@@ -414,7 +417,7 @@ func process_turn_end_effects(target_hp: int, active_effects: Array[StatusEffect
 		match effect.effect_type:
 			StatusEffect.Type.BURN, StatusEffect.Type.POISON:
 				current_hp -= effect.power
-				add_log("🔥 %s takes [color=orange]%d[/color] %s damage!" % [target_name, effect.power, effect.name])
+				add_log("%s takes [color=orange]%d[/color] %s damage!" % [target_name, effect.power, effect.name])
 				
 		# 2. Efektin süresini 1 tur azalt
 		if effect.duration < 999:

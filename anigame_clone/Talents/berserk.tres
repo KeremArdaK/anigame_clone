@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://v20cujdoe4pd" path="res://talent_resource.gd" id="1_b1wro"]
 [ext_resource type="Texture2D" uid="uid://bd3rqvhnm1pap" path="res://icon.svg" id="2_v63uf"]
+[ext_resource type="Resource" uid="uid://hm0s5geqpxiq" path="res://Talents/defensive_aura.tres" id="3_v63uf"]
 
 [resource]
 script = ExtResource("1_b1wro")
@@ -10,4 +11,5 @@ talent_name = "Berserk"
 talent_icon = ExtResource("2_v63uf")
 effect_value = 5.0
 cost = 25
+unlock_talents = Array[ExtResource("1_b1wro")]([ExtResource("3_v63uf")])
 metadata/_custom_type_script = "uid://v20cujdoe4pd"

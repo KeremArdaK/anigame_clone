@@ -1,26 +1,30 @@
 extends TextureButton
 class_name TalentNode
 
-# Tasarladığın o Resource dosyasını Inspector'dan buraya sürükleyeceğiz
 @export var talent_data: TalentResource
-@onready var line_2d = $Line2D
+
+# Menajere "bana tıklandı" haberi göndermek için sinyal
+signal talent_clicked(node_reference: TalentNode)
 
 func _ready() -> void:
-    if get_parent() is TalentNode:
-        line_2d.add_point(global_position + size/2)
-        line_2d.add_point(get_parent().global_position + size/2)
-        
-    # Eğer resource bağlandıysa, ikonunu otomatik olarak butona ata
-    if talent_data and talent_data.talent_icon:
-        texture_normal = talent_data.talent_icon
+	if talent_data and talent_data.talent_icon:
+		texture_normal = talent_data.talent_icon
+		_update_tooltip()
 		
-		# İsteğe bağlı: Butonun üzerine gelince ismini göstersin
-        tooltip_text = talent_data.talent_name + "\nCost: " + str(talent_data.cost) + " PP"
-		
-	# Tıklanma sinyalini bağlıyoruz (Mantığını 3. aşamada yazacağız)
-    pressed.connect(_on_talent_pressed)
+	pressed.connect(_on_talent_pressed)
 
-func _on_talent_pressed():
-	# Harita yöneticisine "Bana tıklandı!" diye haber vereceğiz
-	# Şimdilik sadece test için print koyalım:
-    print(talent_data.talent_name + " yeteneğine tıklandı!")
+func _on_talent_pressed() -> void:
+	talent_clicked.emit(self)
+
+# Tooltip içeriğini dinamik hale getiriyoruz
+func _update_tooltip() -> void:
+	tooltip_text = talent_data.talent_name + "\nCost: " + str(talent_data.cost) + " PP\n" + talent_data.description
+
+# Yeteneğin durumuna göre butonun rengini/görünümünü değiştirir
+func update_visual_state(is_unlocked: bool, is_available: bool) -> void:
+	if is_unlocked:
+		modulate = Color(1, 1, 1, 1) # Tam parlak, açık renk
+	elif is_available:
+		modulate = Color(0.6, 0.6, 0.6, 1) # Satın alınabilir, biraz sönük gri
+	else:
+		modulate = Color(0.2, 0.2, 0.2, 1) # Tamamen kilitli, koyu karanlık

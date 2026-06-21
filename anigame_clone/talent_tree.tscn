@@ -2,20 +2,35 @@
 
 [ext_resource type="Script" uid="uid://bedh54x1ma35j" path="res://skill_tree_manager.gd" id="1_7jiqo"]
 [ext_resource type="Script" uid="uid://b6jsqjcx7eolh" path="res://camera_2d.gd" id="1_khpiu"]
+[ext_resource type="Resource" uid="uid://dw4gxawgeefpj" path="res://Talents/perserverance.tres" id="4_1p1b8"]
 [ext_resource type="PackedScene" uid="uid://c7ppdplyqlplp" path="res://talent_node.tscn" id="4_ct48k"]
+[ext_resource type="Resource" uid="uid://bbc0w3btqyvhi" path="res://Talents/berserk.tres" id="5_kqbel"]
+[ext_resource type="Resource" uid="uid://b0dnmjiwjtxf6" path="res://Talents/fortune.tres" id="6_l0g1a"]
+[ext_resource type="Resource" uid="uid://hm0s5geqpxiq" path="res://Talents/defensive_aura.tres" id="7_srp04"]
 
 [node name="SkillTreeManager" type="Node2D" unique_id=804878242]
 script = ExtResource("1_7jiqo")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1295610737]
-position_smoothing_enabled = true
 script = ExtResource("1_khpiu")
+
+[node name="Button" type="Button" parent="Camera2D" unique_id=590675831]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 229.0
+offset_top = 230.0
+offset_right = 572.0
+offset_bottom = 320.5
+grow_vertical = 2
+text = "Back to the Prestige Menu"
 
 [node name="TextureButton" parent="." unique_id=417701967 instance=ExtResource("4_ct48k")]
 offset_left = -56.0
 offset_top = 184.0
 offset_right = 72.0
 offset_bottom = 312.0
+talent_data = ExtResource("4_1p1b8")
 
 [node name="TextureButton" parent="TextureButton" unique_id=813253323 instance=ExtResource("4_ct48k")]
 layout_mode = 0
@@ -23,27 +38,15 @@ offset_left = 216.0
 offset_top = -184.0
 offset_right = 344.0
 offset_bottom = -56.0
-
-[node name="TextureButton5" parent="TextureButton/TextureButton" unique_id=48073378 instance=ExtResource("4_ct48k")]
-layout_mode = 0
-offset_left = -368.0
-offset_top = -232.0
-offset_right = -240.0
-offset_bottom = -104.0
-
-[node name="TextureButton6" parent="TextureButton/TextureButton" unique_id=2003482805 instance=ExtResource("4_ct48k")]
-layout_mode = 0
-offset_left = -16.0
-offset_top = -232.0
-offset_right = 112.0
-offset_bottom = -104.0
+talent_data = ExtResource("5_kqbel")
 
 [node name="TextureButton7" parent="TextureButton/TextureButton" unique_id=1466597901 instance=ExtResource("4_ct48k")]
 layout_mode = 0
-offset_left = 200.0
+offset_left = 104.0
 offset_top = -232.0
-offset_right = 328.0
+offset_right = 232.0
 offset_bottom = -104.0
+talent_data = ExtResource("7_srp04")
 
 [node name="TextureButton3" parent="TextureButton" unique_id=149633316 instance=ExtResource("4_ct48k")]
 layout_mode = 0
@@ -51,3 +54,6 @@ offset_left = -232.0
 offset_top = -184.0
 offset_right = -104.0
 offset_bottom = -56.0
+talent_data = ExtResource("6_l0g1a")
+
+[connection signal="pressed" from="Camera2D/Button" to="." method="_on_button_pressed"]

@@ -7,3 +7,6 @@ func _ready() -> void:
 
 func _on_prestige_button_pressed() -> void:
 	GameManager.do_prestige()
+
+func _on_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://talent_tree.tscn")
