@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://e0og6ahajw3l"]
+
+[ext_resource type="Script" uid="uid://dieialnq8mc0f" path="res://Scripts/card_data.gd" id="1_b5lc3"]
+[ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="1_dcrgs"]
+
+[sub_resource type="Resource" id="Resource_dcrgs"]
+script = ExtResource("1_dcrgs")
+name = "DefenseBuff"
+description = "Buffs your defense."
+effect_type = 5
+power = 25
+duration = 5
+metadata/_custom_type_script = "uid://ghy0pniysv4f"
+
+[resource]
+script = ExtResource("1_b5lc3")
+innate_effects = Array[ExtResource("1_dcrgs")]([SubResource("Resource_dcrgs")])
+card_name = "Slime"
+attack_damage = 1
+max_health = 250
+attack_type = 2
+rarity = 2
+metadata/_custom_type_script = "uid://dieialnq8mc0f"

@@ -7,6 +7,7 @@ script = ExtResource("1_jy2xn")
 name = "Resurrection"
 description = "Resurrects you from death."
 effect_type = 6
+stack_behavior = 2
 power = 25
 duration = 9999
 metadata/_custom_type_script = "uid://ghy0pniysv4f"

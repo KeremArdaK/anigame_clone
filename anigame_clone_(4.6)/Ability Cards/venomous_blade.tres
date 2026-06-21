@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="ResourceCardData" format=3 uid="uid://cbfels1fj271"]
+
+[ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="1_tjgll"]
+[ext_resource type="Script" uid="uid://dpb8ctob5ni15" path="res://Scripts/resource_card_data.gd" id="4_eth7n"]
+
+[sub_resource type="Resource" id="Resource_y0f88"]
+script = ExtResource("1_tjgll")
+name = "DamageBuff"
+description = "Bufffs your damage."
+effect_type = 4
+power = 5
+duration = 9999
+metadata/_custom_type_script = "uid://ghy0pniysv4f"
+
+[sub_resource type="Resource" id="Resource_pka1b"]
+script = ExtResource("1_tjgll")
+name = "Poison"
+description = "Poisons enemy for 3 turns for X damage. Unlike burn, poison damage can not be healed."
+effect_type = 2
+power = 15
+duration = 9999
+metadata/_custom_type_script = "uid://ghy0pniysv4f"
+
+[resource]
+script = ExtResource("4_eth7n")
+card_name = "Venomous Blade"
+card_description = "%5 dmg buff and poison."
+rarity = 1
+innate_effects = Array[ExtResource("1_tjgll")]([SubResource("Resource_y0f88")])
+on_hit_effects = Array[ExtResource("1_tjgll")]([SubResource("Resource_pka1b")])
+metadata/_custom_type_script = "uid://dpb8ctob5ni15"

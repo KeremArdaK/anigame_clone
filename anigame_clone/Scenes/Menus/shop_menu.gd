@@ -3,80 +3,79 @@ extends Control
 const PACK_PRICE: int = 50
 
 var shop_card_pool: Array[ResourceCardData] = [
-    preload("res://Ability Cards/blinding_rage.tres"),
-    preload("res://Ability Cards/blood_boil.tres"),
-    preload("res://Ability Cards/burning_punch.tres"),
-    preload("res://Ability Cards/eclipse.tres"),
-    preload("res://Ability Cards/final_gambit.tres"),
-    preload("res://Ability Cards/flamingpunch.tres"),
-    preload("res://Ability Cards/kamikaze_protocol.tres"),
-    preload("res://Ability Cards/noxious_fumes.tres"),
-    preload("res://Ability Cards/phoenix_ash.tres"),
-    preload("res://Ability Cards/poisoning_punch.tres"),
-    preload("res://Ability Cards/radiant_armor.tres"),
-    preload("res://Ability Cards/siphoning_aura.tres"),
-    preload("res://Ability Cards/unbreakable_will.tres"),
-    preload("res://Ability Cards/undying_menace.tres"),
-    preload("res://Ability Cards/vampire's_vessel.tres"),
-    preload("res://Ability Cards/venomous_blade.tres")
+	preload("res://Ability Cards/blinding_rage.tres"),
+	preload("res://Ability Cards/blood_boil.tres"),
+	preload("res://Ability Cards/burning_punch.tres"),
+	preload("res://Ability Cards/eclipse.tres"),
+	preload("res://Ability Cards/final_gambit.tres"),
+	preload("res://Ability Cards/flamingpunch.tres"),
+	preload("res://Ability Cards/kamikaze_protocol.tres"),
+	preload("res://Ability Cards/noxious_fumes.tres"),
+	preload("res://Ability Cards/phoenix_ash.tres"),
+	preload("res://Ability Cards/poisoning_punch.tres"),
+	preload("res://Ability Cards/radiant_armor.tres"),
+	preload("res://Ability Cards/siphoning_aura.tres"),
+	preload("res://Ability Cards/unbreakable_will.tres"),
+	preload("res://Ability Cards/undying_menace.tres"),
+	preload("res://Ability Cards/vampire's_vessel.tres"),
+	preload("res://Ability Cards/venomous_blade.tres")
 ]
 
 @onready var buy_button = %BuyButton
 @onready var card_texture = %CardTexture
 
 func _ready():
-    buy_button.pressed.connect(_on_buy_button_pressed)
+	buy_button.pressed.connect(_on_buy_button_pressed)
 
 func _on_buy_button_pressed():
-    #birinci aşama kontrol
-    if CurrencyManager.card_shards < PACK_PRICE:
-        #result_label.text = "Not enough shards! You need %d." % PACK_PRICE
-        return
+	#birinci aşama kontrol
+	if CurrencyManager.card_shards < PACK_PRICE:
+		#result_label.text = "Not enough shards! You need %d." % PACK_PRICE
+		return
 
-    #iknici aşama ödeme
-    CurrencyManager.spend_shards(PACK_PRICE)
+	#iknici aşama ödeme
+	CurrencyManager.spend_shards(PACK_PRICE)
 
-    #üçüncü aşama RNG
-    var drop_count = randi_range(1, 3)
-    var pulled_card_names: Array[String] = []
+	#üçüncü aşama RNG
+	var drop_count = randi_range(1, 3)
+	var pulled_card_names: Array[String] = []
 
-    #dördüncü aşama, çekiliş
-    for i in range(drop_count):
+	#dördüncü aşama, çekiliş
+	for i in range(drop_count):
 		# 1. 0.0 ile 100.0 arasında devasa, küsuratlı bir zar at
-        var roll = randf_range(0.0, 100.0)
-        var target_rarity: CardData.Rarity
+		var roll = randf_range(0.0, 100.0)
+		var target_rarity: CardData.Rarity
 		
 		# 2. Zarın düştüğü dilimi bul
-        if roll <= 60.0:
-            target_rarity = CardData.Rarity.COMMON     # %60 ihtimal (0 - 60 arası)
-        elif roll <= 94.9:
-            target_rarity = CardData.Rarity.RARE       # %34.9 ihtimal (60.1 - 94.9 arası)
-        elif roll <= 99.9:
-            target_rarity = CardData.Rarity.LEGENDARY  # %5 ihtimal (95.0 - 99.9 arası)
-        else:
-            target_rarity = CardData.Rarity.MYTHIC     # %0.1 ihtimal (99.9 - 100 arası)
+		if roll <= 60.0:
+			target_rarity = CardData.Rarity.COMMON     # %60 ihtimal (0 - 60 arası)
+		elif roll <= 94.9:
+			target_rarity = CardData.Rarity.RARE       # %34.9 ihtimal (60.1 - 94.9 arası)
+		elif roll <= 99.9:
+			target_rarity = CardData.Rarity.LEGENDARY  # %5 ihtimal (95.0 - 99.9 arası)
+		else:
+			target_rarity = CardData.Rarity.MYTHIC     # %0.1 ihtimal (99.9 - 100 arası)
 			
 		# 3. Tüm market havuzunu sadece o nadirlikteki kartları içerecek şekilde süz
-        var possible_cards = shop_card_pool.filter(func(card): return card.rarity == target_rarity)
+		var possible_cards = shop_card_pool.filter(func(card): return card.rarity == target_rarity)
 		
 		# o nadirlikte bir kart yoksa
-        if possible_cards.is_empty():
+		if possible_cards.is_empty():
 		
-            possible_cards = shop_card_pool.filter(func(card): return card.rarity == CardData.Rarity.COMMON)
+			possible_cards = shop_card_pool.filter(func(card): return card.rarity == CardData.Rarity.COMMON)
 			
 		# 4. Seçilen nadirlik havuzundan rastgele bir kart çek!
-        var random_index = randi() % possible_cards.size()
-        var pulled_card = possible_cards[random_index]
+		var random_index = randi() % possible_cards.size()
+		var pulled_card = possible_cards[random_index]
 
-        if InventoryManager.owned_ability_cards.has(pulled_card):
-            var refund_shards = 150
-            CurrencyManager.add_shards(refund_shards)
-            pulled_card_names.append(pulled_card.card_name + " (Copy! +150 shards returned.)")
-        else:
-            InventoryManager.owned_ability_cards.append(pulled_card)
-            pulled_card_names.append(pulled_card.card_name)
-        
-    
-    #result_label.text = "Pack Opened! You got: " + ", ".join(pulled_card_names)
-    PopupManager.show_message("Pack Opened! You got:" + ", ".join(pulled_card_names), Color.ALICE_BLUE)
-
+		if InventoryManager.owned_ability_cards.has(pulled_card):
+			var refund_shards = 150
+			CurrencyManager.add_shards(refund_shards)
+			pulled_card_names.append(pulled_card.card_name + " (Copy! +150 shards returned.)")
+		else:
+			InventoryManager.owned_ability_cards.append(pulled_card)
+			pulled_card_names.append(pulled_card.card_name)
+		
+	
+	#result_label.text = "Pack Opened! You got: " + ", ".join(pulled_card_names)
+	PopupManager.show_message("Pack Opened! You got:" + ", ".join(pulled_card_names), Color.ALICE_BLUE)

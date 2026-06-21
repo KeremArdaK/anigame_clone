@@ -1,0 +1,88 @@
+[gd_scene format=3 uid="uid://cr1lqa3ssnwb3"]
+
+[ext_resource type="Script" uid="uid://bujys3ugtbnwx" path="res://Scripts/fight_menu.gd" id="1_hahqr"]
+
+[node name="FightMenu" type="Control" unique_id=248577796]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="FightMenu" type="Panel" parent="." unique_id=132881957]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="FightMenu" unique_id=52220321]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hahqr")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="FightMenu/MarginContainer" unique_id=782140486]
+layout_mode = 2
+
+[node name="PlayerSide" type="VBoxContainer" parent="FightMenu/MarginContainer/HBoxContainer" unique_id=1484225698]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="EquippedAbilitiesContainer" type="HBoxContainer" parent="FightMenu/MarginContainer/HBoxContainer/PlayerSide" unique_id=585635685]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="LogSide" type="VBoxContainer" parent="FightMenu/MarginContainer/HBoxContainer" unique_id=1060613173]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="StageInfo" type="Label" parent="FightMenu/MarginContainer/HBoxContainer/LogSide" unique_id=1129322769]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 28
+text = "STAGE 5"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ShardLabel" type="Label" parent="FightMenu/MarginContainer/HBoxContainer/LogSide" unique_id=881021765]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Total Shards:"
+
+[node name="Spacer" type="Control" parent="FightMenu/MarginContainer/HBoxContainer/LogSide" unique_id=884782047]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.2
+
+[node name="AutoFightButton" type="CheckButton" parent="FightMenu/MarginContainer/HBoxContainer/LogSide" unique_id=949570982]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Auto Fight"
+
+[node name="FightButton" type="Button" parent="FightMenu/MarginContainer/HBoxContainer/LogSide" unique_id=266246687]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
+text = "FIGHT"
+
+[node name="BattleLog" type="RichTextLabel" parent="FightMenu/MarginContainer/HBoxContainer/LogSide" unique_id=549478257]
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+
+[node name="EnemySide" type="VBoxContainer" parent="FightMenu/MarginContainer/HBoxContainer" unique_id=852775805]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Control" type="Control" parent="FightMenu/MarginContainer/HBoxContainer/EnemySide" unique_id=43009538]
+layout_mode = 2
+size_flags_vertical = 10

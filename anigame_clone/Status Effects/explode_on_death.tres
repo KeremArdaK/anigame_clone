@@ -7,6 +7,7 @@ script = ExtResource("1_hqkx8")
 name = "Explode On Death"
 description = "Makes you explode on death"
 effect_type = 7
+stack_behavior = 2
 power = 50
 duration = 9999
 metadata/_custom_type_script = "uid://ghy0pniysv4f"

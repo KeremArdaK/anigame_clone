@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://pnl2a38s5688"]
+
+[ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="1_afcpm"]
+[ext_resource type="Script" uid="uid://dieialnq8mc0f" path="res://Scripts/card_data.gd" id="1_nhhm5"]
+
+[sub_resource type="Resource" id="Resource_afcpm"]
+script = ExtResource("1_afcpm")
+name = "Burn"
+description = "Burns enemies for 3 turn for X damage."
+effect_type = 1
+power = 5
+duration = 9999
+metadata/_custom_type_script = "uid://ghy0pniysv4f"
+
+[resource]
+script = ExtResource("1_nhhm5")
+on_hit_effects = Array[ExtResource("1_afcpm")]([SubResource("Resource_afcpm")])
+card_name = "Demon"
+flavor_text = "A demon that ascended from flames of hell."
+attack_damage = 35
+max_health = 175
+attack_type = 1
+rarity = 2
+metadata/_custom_type_script = "uid://dieialnq8mc0f"

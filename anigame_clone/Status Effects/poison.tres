@@ -7,6 +7,7 @@ script = ExtResource("1_x7lkg")
 name = "Poison"
 description = "Poisons enemy for 3 turns for X damage. Unlike burn, poison damage can not be healed."
 effect_type = 2
+stack_behavior = 0
 power = 15
 duration = 3
 metadata/_custom_type_script = "uid://ghy0pniysv4f"

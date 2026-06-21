@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="ResourceCardData" format=3 uid="uid://sa4t5abi4so"]
+
+[ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="1_cwiq6"]
+[ext_resource type="Texture2D" uid="uid://c5fqou1lfbmro" path="res://Textures/icons/Buffs/attack_boost.png" id="1_nhtfd"]
+[ext_resource type="Script" uid="uid://dpb8ctob5ni15" path="res://Scripts/resource_card_data.gd" id="4_jq150"]
+
+[sub_resource type="Resource" id="Resource_x7iq8"]
+script = ExtResource("1_cwiq6")
+name = "DamageBuff"
+description = "Bufffs your damage."
+effect_type = 4
+power = 15
+duration = 9999
+metadata/_custom_type_script = "uid://ghy0pniysv4f"
+
+[sub_resource type="Resource" id="Resource_cwiq6"]
+script = ExtResource("1_cwiq6")
+name = "Blindness"
+description = "Blinds enemies."
+power = 50
+duration = 3
+metadata/_custom_type_script = "uid://ghy0pniysv4f"
+
+[resource]
+script = ExtResource("4_jq150")
+card_name = "Blinding Rage"
+card_description = "%15 [color=red]dmg[/color] buff."
+card_texture = ExtResource("1_nhtfd")
+rarity = 1
+innate_effects = Array[ExtResource("1_cwiq6")]([SubResource("Resource_x7iq8")])
+on_hit_effects = Array[ExtResource("1_cwiq6")]([SubResource("Resource_cwiq6")])
+metadata/_custom_type_script = "uid://dpb8ctob5ni15"

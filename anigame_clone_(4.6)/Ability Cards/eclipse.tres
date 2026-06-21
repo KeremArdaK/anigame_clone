@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="ResourceCardData" format=3 uid="uid://cfu0sp6a3xx1k"]
+
+[ext_resource type="Texture2D" uid="uid://bd3rqvhnm1pap" path="res://icon.svg" id="1_bfkrc"]
+[ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="1_s0vti"]
+[ext_resource type="Script" uid="uid://dpb8ctob5ni15" path="res://Scripts/resource_card_data.gd" id="5_a3oht"]
+
+[sub_resource type="Resource" id="Resource_bfkrc"]
+script = ExtResource("1_s0vti")
+name = "DefenseBuff"
+description = "Buffs your defense."
+effect_type = 5
+power = 15
+duration = 9999
+metadata/_custom_type_script = "uid://ghy0pniysv4f"
+
+[sub_resource type="Resource" id="Resource_r3dio"]
+script = ExtResource("1_s0vti")
+name = "DamageBuff"
+description = "Bufffs your damage."
+effect_type = 4
+power = 15
+duration = 9999
+metadata/_custom_type_script = "uid://ghy0pniysv4f"
+
+[resource]
+script = ExtResource("5_a3oht")
+card_name = "Eclipse"
+card_description = "%15 Defense Buff, %15 DMG Buff"
+card_texture = ExtResource("1_bfkrc")
+rarity = 2
+innate_effects = Array[ExtResource("1_s0vti")]([SubResource("Resource_bfkrc"), SubResource("Resource_r3dio")])
+metadata/_custom_type_script = "uid://dpb8ctob5ni15"

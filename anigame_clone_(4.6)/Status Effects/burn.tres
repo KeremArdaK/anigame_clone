@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="StatusEffect" format=3 uid="uid://c7csbbsa6pksd"]
+
+[ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="1_8icxm"]
+
+[resource]
+script = ExtResource("1_8icxm")
+name = "Burn"
+description = "Burns enemies for 3 turn for X damage."
+effect_type = 1
+power = 15
+duration = 3
+metadata/_custom_type_script = "uid://ghy0pniysv4f"

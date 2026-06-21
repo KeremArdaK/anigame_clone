@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://dsctr1jt8pt4p"]
+
+[ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="1_e3fss"]
+[ext_resource type="Script" uid="uid://dieialnq8mc0f" path="res://Scripts/card_data.gd" id="1_n5a1c"]
+[ext_resource type="Texture2D" uid="uid://bd3rqvhnm1pap" path="res://icon.svg" id="1_vnkft"]
+
+[resource]
+script = ExtResource("1_n5a1c")
+card_name = "Morn"
+card_texture = ExtResource("1_vnkft")
+attack_damage = 15
+max_health = 100
+attack_type = 1
+rarity = 3
+metadata/_custom_type_script = "uid://dieialnq8mc0f"

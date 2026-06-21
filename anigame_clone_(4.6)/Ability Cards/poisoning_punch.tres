@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="ResourceCardData" format=3 uid="uid://d1vw3qlba2ttq"]
+
+[ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="1_0ff2h"]
+[ext_resource type="Texture2D" uid="uid://cf7bkt1f5237e" path="res://Textures/icons/Spells/poison_dagger.png" id="1_mhci5"]
+[ext_resource type="Script" uid="uid://dpb8ctob5ni15" path="res://Scripts/resource_card_data.gd" id="3_g8il1"]
+
+[sub_resource type="Resource" id="Resource_0ff2h"]
+script = ExtResource("1_0ff2h")
+name = "Poison"
+description = "Poisons enemy for 3 turns for X damage. Unlike burn, poison damage can not be healed."
+effect_type = 2
+power = 15
+duration = 9999
+metadata/_custom_type_script = "uid://ghy0pniysv4f"
+
+[resource]
+script = ExtResource("3_g8il1")
+card_name = "Poisoning Punch"
+card_description = "Poison enemies."
+card_texture = ExtResource("1_mhci5")
+innate_effects = Array[ExtResource("1_0ff2h")]([SubResource("Resource_0ff2h")])
+metadata/_custom_type_script = "uid://dpb8ctob5ni15"

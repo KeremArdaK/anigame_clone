@@ -1,7 +1,6 @@
 [gd_resource type="Resource" script_class="ResourceCardData" format=3 uid="uid://ck0pi1h6y7wd0"]
 
 [ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="1_37yo8"]
-[ext_resource type="Texture2D" uid="uid://cvu0pcf2malkx" path="res://Textures/icons/Buffs/defense_boost.png" id="1_n5aux"]
 [ext_resource type="Script" uid="uid://dpb8ctob5ni15" path="res://Scripts/resource_card_data.gd" id="2_n5aux"]
 
 [sub_resource type="Resource" id="Resource_n5aux"]
@@ -25,7 +24,6 @@ metadata/_custom_type_script = "uid://ghy0pniysv4f"
 script = ExtResource("2_n5aux")
 card_name = "Radiant Armor"
 card_description = "%75 Defense Buff and %5 chance to blind enemies."
-card_texture = ExtResource("1_n5aux")
 rarity = 2
 innate_effects = Array[ExtResource("1_37yo8")]([SubResource("Resource_n5aux")])
 on_hit_effects = Array[ExtResource("1_37yo8")]([SubResource("Resource_nb0no")])

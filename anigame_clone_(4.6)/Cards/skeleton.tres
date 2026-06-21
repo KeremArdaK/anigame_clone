@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CardData" format=3 uid="uid://gfh74y4irga2"]
+
+[ext_resource type="Script" uid="uid://dieialnq8mc0f" path="res://Scripts/card_data.gd" id="1_viryp"]
+
+[resource]
+script = ExtResource("1_viryp")
+card_name = "Skeleton"
+attack_damage = 7
+max_health = 10
+metadata/_custom_type_script = "uid://dieialnq8mc0f"
