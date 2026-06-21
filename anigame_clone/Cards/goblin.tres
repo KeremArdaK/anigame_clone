@@ -1,10 +1,13 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://cyjefj7s71nad"]
 
 [ext_resource type="Script" uid="uid://dieialnq8mc0f" path="res://Scripts/card_data.gd" id="1_kfhno"]
+[ext_resource type="Texture2D" uid="uid://m44tl248otcp" path="res://Textures/AbilityCardTextures/goblin-head.svg" id="1_mi867"]
+[ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="2_mne7c"]
 
 [resource]
 script = ExtResource("1_kfhno")
 card_name = "Goblin"
+card_texture = ExtResource("1_mi867")
 attack_damage = 3
 max_health = 25
 metadata/_custom_type_script = "uid://dieialnq8mc0f"

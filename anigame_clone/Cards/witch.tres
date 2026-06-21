@@ -1,10 +1,13 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://l6oi5bp5n6mc"]
 
 [ext_resource type="Script" uid="uid://dieialnq8mc0f" path="res://Scripts/card_data.gd" id="1_i31fo"]
+[ext_resource type="Texture2D" uid="uid://dtgbl3ydrpmgn" path="res://Textures/AbilityCardTextures/witch-face.svg" id="1_m3fan"]
+[ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="2_kbw5h"]
 
 [resource]
 script = ExtResource("1_i31fo")
 card_name = "Witch"
+card_texture = ExtResource("1_m3fan")
 attack_damage = 10
 max_health = 65
 rarity = 1

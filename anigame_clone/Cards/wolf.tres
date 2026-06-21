@@ -1,10 +1,13 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://cx66k5o2mgwqd"]
 
 [ext_resource type="Script" uid="uid://dieialnq8mc0f" path="res://Scripts/card_data.gd" id="1_4xq66"]
+[ext_resource type="Texture2D" uid="uid://cnxoip610elsl" path="res://Textures/AbilityCardTextures/wolf-howl.svg" id="1_upfwk"]
+[ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="2_neuoq"]
 
 [resource]
 script = ExtResource("1_4xq66")
 card_name = "Wolf"
+card_texture = ExtResource("1_upfwk")
 attack_damage = 10
 max_health = 65
 rarity = 1

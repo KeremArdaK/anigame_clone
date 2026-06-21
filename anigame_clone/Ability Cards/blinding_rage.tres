@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="ResourceCardData" format=3 uid="uid://sa4t5abi4so"]
 
 [ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="1_cwiq6"]
-[ext_resource type="Texture2D" uid="uid://bd3rqvhnm1pap" path="res://icon.svg" id="1_x7iq8"]
+[ext_resource type="Texture2D" uid="uid://c3rdygss18mdr" path="res://Textures/AbilityCardTextures/armor-punch.svg" id="1_x7iq8"]
 [ext_resource type="Script" uid="uid://dpb8ctob5ni15" path="res://Scripts/resource_card_data.gd" id="4_jq150"]
 
 [sub_resource type="Resource" id="Resource_x7iq8"]

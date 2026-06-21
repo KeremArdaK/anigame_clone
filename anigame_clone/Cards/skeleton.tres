@@ -1,10 +1,13 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://gfh74y4irga2"]
 
+[ext_resource type="Texture2D" uid="uid://chaxyhloorfy8" path="res://Textures/AbilityCardTextures/raise-skeleton.svg" id="1_er61d"]
 [ext_resource type="Script" uid="uid://dieialnq8mc0f" path="res://Scripts/card_data.gd" id="1_viryp"]
+[ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="2_w52yo"]
 
 [resource]
 script = ExtResource("1_viryp")
 card_name = "Skeleton"
+card_texture = ExtResource("1_er61d")
 attack_damage = 7
 max_health = 10
 metadata/_custom_type_script = "uid://dieialnq8mc0f"

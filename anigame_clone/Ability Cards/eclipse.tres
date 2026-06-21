@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ResourceCardData" format=3 uid="uid://cfu0sp6a3xx1k"]
 
-[ext_resource type="Texture2D" uid="uid://bd3rqvhnm1pap" path="res://icon.svg" id="1_bfkrc"]
+[ext_resource type="Texture2D" uid="uid://dc2k041lk842f" path="res://Textures/AbilityCardTextures/eclipse.svg" id="1_bfkrc"]
 [ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="1_s0vti"]
 [ext_resource type="Script" uid="uid://dpb8ctob5ni15" path="res://Scripts/resource_card_data.gd" id="5_a3oht"]
 

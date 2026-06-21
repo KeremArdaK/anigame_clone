@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://csaxm3q77webm"]
 
 [ext_resource type="Script" uid="uid://dieialnq8mc0f" path="res://Scripts/card_data.gd" id="1_mxcdv"]
+[ext_resource type="Texture2D" uid="uid://bkkh0ef6pd8nm" path="res://Textures/AbilityCardTextures/shambling-zombie.svg" id="1_nt3ia"]
 [ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="1_ujken"]
 
 [sub_resource type="Resource" id="Resource_ujken"]
@@ -26,6 +27,7 @@ script = ExtResource("1_mxcdv")
 innate_effects = Array[ExtResource("1_ujken")]([SubResource("Resource_ujken")])
 on_hit_effects = Array[ExtResource("1_ujken")]([SubResource("Resource_nt3ia")])
 card_name = "Zombie"
+card_texture = ExtResource("1_nt3ia")
 attack_damage = 40
 max_health = 20
 rarity = 1

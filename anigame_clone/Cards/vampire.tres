@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="CardData" format=3 uid="uid://igb0xo7aj1fi"]
 
 [ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="1_8s472"]
+[ext_resource type="Texture2D" uid="uid://co067wrhh0rdk" path="res://Textures/AbilityCardTextures/vampire-dracula.svg" id="1_apveo"]
 [ext_resource type="Script" uid="uid://dieialnq8mc0f" path="res://Scripts/card_data.gd" id="1_kw4xa"]
 
 [sub_resource type="Resource" id="Resource_apveo"]
@@ -16,6 +17,7 @@ metadata/_custom_type_script = "uid://ghy0pniysv4f"
 script = ExtResource("1_kw4xa")
 innate_effects = Array[ExtResource("1_8s472")]([SubResource("Resource_apveo")])
 card_name = "Vampire"
+card_texture = ExtResource("1_apveo")
 attack_damage = 15
 max_health = 75
 attack_type = 1

@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="ResourceCardData" format=3 uid="uid://dn58hp10buep4"]
 
 [ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="1_0y7f7"]
+[ext_resource type="Texture2D" uid="uid://ddvohuaf271la" path="res://Textures/AbilityCardTextures/overlord-helm.svg" id="1_y4g0t"]
 [ext_resource type="Script" uid="uid://dpb8ctob5ni15" path="res://Scripts/resource_card_data.gd" id="2_y4g0t"]
 
 [sub_resource type="Resource" id="Resource_0y7f7"]
@@ -16,6 +17,7 @@ metadata/_custom_type_script = "uid://ghy0pniysv4f"
 script = ExtResource("2_y4g0t")
 card_name = "Undying Menace"
 card_description = "Resurrects player with %99 HP."
+card_texture = ExtResource("1_y4g0t")
 rarity = 2
 innate_effects = Array[ExtResource("1_0y7f7")]([SubResource("Resource_0y7f7")])
 metadata/_custom_type_script = "uid://dpb8ctob5ni15"

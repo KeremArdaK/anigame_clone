@@ -1,5 +1,6 @@
 [gd_resource type="Resource" script_class="ResourceCardData" format=3 uid="uid://cb6kuxwo8qtlf"]
 
+[ext_resource type="Texture2D" uid="uid://dy5aid2m43cbs" path="res://Textures/AbilityCardTextures/meditation.svg" id="1_5p3mt"]
 [ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="1_dult5"]
 [ext_resource type="Script" uid="uid://dpb8ctob5ni15" path="res://Scripts/resource_card_data.gd" id="4_5xir7"]
 
@@ -25,6 +26,7 @@ metadata/_custom_type_script = "uid://ghy0pniysv4f"
 script = ExtResource("4_5xir7")
 card_name = "Unbreakable Will"
 card_description = "%35 Defense Buff and Damage Buff."
+card_texture = ExtResource("1_5p3mt")
 rarity = 1
 innate_effects = Array[ExtResource("1_dult5")]([SubResource("Resource_xj67n"), SubResource("Resource_5p3mt")])
 metadata/_custom_type_script = "uid://dpb8ctob5ni15"
