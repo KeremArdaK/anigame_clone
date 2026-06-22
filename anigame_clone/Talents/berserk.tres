@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="TalentResource" format=3 uid="uid://bbc0w3btqyvhi"]
 
 [ext_resource type="Script" uid="uid://v20cujdoe4pd" path="res://talent_resource.gd" id="1_b1wro"]
-[ext_resource type="Texture2D" uid="uid://bd3rqvhnm1pap" path="res://icon.svg" id="2_v63uf"]
+[ext_resource type="Texture2D" uid="uid://c4ibe4ab3p118" path="res://Textures/AbilityCardTextures/mighty-force.svg" id="2_v63uf"]
 [ext_resource type="Resource" uid="uid://hm0s5geqpxiq" path="res://Talents/defensive_aura.tres" id="3_v63uf"]
 
 [resource]

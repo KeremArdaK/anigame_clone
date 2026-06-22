@@ -2,16 +2,16 @@ extends Node
 
 signal inventory_updated
 
-# Envanterdeki bütün kartlar
+
 var owned_ability_cards: Array[ResourceCardData] = []
 
-# Kuşanılan kartlar
+
 var equipped_ability_cards: Array[ResourceCardData] = []
 
-# İleride eşya ekleme için
+
 var owned_items: Array = []
 
-#başlangıçta kuşanma slotu sınırı(skill tree ile artacak)
+
 var max_equip_slots: int = 3
 
 func equip_card(card: ResourceCardData) -> bool:

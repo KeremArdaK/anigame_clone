@@ -2,7 +2,7 @@ extends MarginContainer
 
 const CARD_SCENE = preload("res://Scenes/card.tscn")
 
-#sahnede aktif olan kartlar ve durum etkileri
+
 var player_active_effects: Array[StatusEffect] = []
 var enemy_active_effects: Array[StatusEffect] = []
 
@@ -37,12 +37,12 @@ const BOSS_POOL = ["demon", "lich"]
 
 const ENEMIES_PER_STAGE = 10
 
-# --- LOG YÖNETİM SİSTEMİ ---
+
 var log_history: Array[String] = []
 const MAX_LOG_LINES: int = 50
 
 func _ready() -> void:
-	# Yazı yenilendiğinde kaydırma çubuğunun hep en altta kalmasını garanti edelim
+
 	battle_log.scroll_following = true 
 	
 	setup_initial_battlefield()
@@ -51,32 +51,32 @@ func _ready() -> void:
 	GameManager.prestige_performed.connect(_on_prestige_performed)
 
 func _on_prestige_performed():
-	# Eski savaştan kalan logları temizle ve sıfırdan başla
+
 	log_history.clear()
 	add_log("[i][color=purple]Prestige complete! Starting anew with cosmic power...[/color][/i]")
 	
-	# Morn'un canını ve başlangıç durumunu ayarla, kuşanılan kart arayüzünü sıfırla
+
 	current_player_hp = player_data.max_health
 	player_active_effects.clear()
 	player_active_on_hit_effects.clear()
 	
-	# Arayüzü 1. stage verilerine göre güncelle ve ilk common düşmanı çağır
+
 	update_ui()
 	update_equipped_abilities_ui()
 	spawn_new_enemy()
 	
-	# Eğer döngü kilitlendiyse dövüş butonunu tekrar aktif et
+
 	fight_button.disabled = false
 
-# --- ÖZEL LOG FONKSİYONU ---
+
 func add_log(message: String):
 	log_history.append(message)
 	
-	# Eğer sınır aşıldıysa en eski logu sil
+
 	if log_history.size() > MAX_LOG_LINES:
 		log_history.pop_front()
 		
-	# Dizideki logları aralarına satır atlaması (\n) koyarak ekrana bas
+
 	battle_log.text = "\n".join(log_history)
 
 func setup_initial_battlefield():
@@ -96,11 +96,11 @@ func setup_initial_battlefield():
 		player_active_effects.append(effect.duplicate())
 	
 	for ability_card in InventoryManager.equipped_ability_cards:
-		# 1. Kuşanılan kartın pasif özelliklerini (innate) ekle
+
 		for effect in ability_card.innate_effects:
 			player_active_effects.append(effect.duplicate())
 			
-		# 2. Kuşanılan kartın vuruş etkilerini (on_hit) ekle
+
 		for effect in ability_card.on_hit_effects:
 			player_active_on_hit_effects.append(effect.duplicate())
 			
@@ -112,34 +112,34 @@ func setup_initial_battlefield():
 	update_equipped_abilities_ui()
 
 func spawn_new_enemy():
-	# 10. stage'in katları ve 10. düşman ise Boss gelir
+
 	var is_boss_encounter = (GameManager.current_stage % 10 == 0) and (GameManager.defeated_enemies_on_current_stage == ENEMIES_PER_STAGE - 1)
 	
 	var random_enemy_name = ""
 	
 	if is_boss_encounter:
-		# Boss havuzundan rastgele birini seç
+
 		random_enemy_name = BOSS_POOL[randi() % BOSS_POOL.size()]
 		add_log("\n[color=red]*** BOSS ENCOUNTER! ***[/color]")
 	else:
-		# Normal düşman havuzunu kurallara göre filtrele
+
 		var valid_enemies: Array[String] = []
 		for enemy_name in ENEMY_POOL:
 			var data = CardDatabase.get_card(enemy_name)
 			
-			# KURAL: 20 ve aşağısı sadece Common
+
 			if GameManager.current_stage <= 20 and data.rarity != CardData.Rarity.COMMON:
 				continue
-			# KURAL: 21-40 arası Common + Rare
+
 			if GameManager.current_stage > 20 and GameManager.current_stage <= 40 and (data.rarity == CardData.Rarity.LEGENDARY or data.rarity == CardData.Rarity.MYTHIC):
 				continue
-			# KURAL: 41-49 arası Mythic HARİÇ hepsi (Geçiş dönemi)
+
 			if GameManager.current_stage > 40 and GameManager.current_stage < 50 and data.rarity == CardData.Rarity.MYTHIC:
 				continue
 				
 			valid_enemies.append(enemy_name)
 		
-		# Geçerli havuzdan rastgele seç
+
 		random_enemy_name = valid_enemies[randi() % valid_enemies.size()]
 
 	enemy_data = CardDatabase.get_card(random_enemy_name)
@@ -162,28 +162,28 @@ func spawn_new_enemy():
 
 func _on_fight_button_pressed():
 	fight_button.disabled = true
-	prepare_player_for_battle() # Savaşı başlatmadan hemen önce karakteri silahlandırıyoruz!
+	prepare_player_for_battle()
 	start_battle_loop()
 
 func prepare_player_for_battle():
-	# 1. Eski savaştan kalanları temizle
+
 	player_active_effects.clear()
-	player_active_on_hit_effects.clear() # 🌟 Yeni sepeti de temizliyoruz
+	player_active_on_hit_effects.clear()
 	
-	# 2. Morn'un Kendi Pasifleri ve Vuruş Etkileri
+
 	for effect in player_data.innate_effects:
 		player_active_effects.append(effect.duplicate())
 	for effect in player_data.on_hit_effects:
-		player_active_on_hit_effects.append(effect.duplicate()) # 🌟 Morn'un doğuştan vuruşları
+		player_active_on_hit_effects.append(effect.duplicate())
 		
-	# 3. Kuşandığımız Yetenek Kartlarının Pasifleri ve Vuruş Etkileri
+
 	for ability_card in InventoryManager.equipped_ability_cards:
 		for effect in ability_card.innate_effects:
 			player_active_effects.append(effect.duplicate())
 		for effect in ability_card.on_hit_effects:
-			player_active_on_hit_effects.append(effect.duplicate()) # 🌟 Kartların vuruşları
+			player_active_on_hit_effects.append(effect.duplicate())
 			
-	# Arayüzü çiz
+
 	update_equipped_abilities_ui()
 
 func start_battle_loop():
@@ -192,12 +192,12 @@ func start_battle_loop():
 	while current_player_hp > 0:
 		await execute_player_turn()
 		
-		# --- DÜŞMAN ÖLÜM KONTROLÜ ---
+
 		if current_enemy_hp <= 0:
 			if check_resurrection("enemy", enemy_active_effects, enemy_data.max_health):
-				pass # Düşman dirildi! Savaş tüm hızıyla devam ediyor.
+				pass
 			else:
-				# Gerçekten öldü. Önce patlama kontrolü yapıyoruz!
+
 				check_explode_on_death("enemy", enemy_active_effects)
 				
 				add_log("[color=green]Victory! %s defeated![/color]" % enemy_data.card_name)
@@ -220,20 +220,20 @@ func start_battle_loop():
 					GameManager.current_stage += 1
 					GameManager.defeated_enemies_on_current_stage = 0
 					
-					# En yüksek stage rekorunu güncelle (Prestige için lazım olacak)
+
 					if GameManager.current_stage > GameManager.highest_stage:
 						GameManager.highest_stage = GameManager.current_stage
 						
 					add_log("[color=gold]Stage Cleared! Advancing to Stage %d[/color]" % GameManager.current_stage)
 
-				# --- SİNSİ PATLAMA KONTROLÜ ---
-				# Düşman patlayıp o hasarla bizi öldürmüş olabilir mi?
+
+
 				if current_player_hp <= 0:
 					if check_resurrection("player", player_active_effects, player_data.max_health):
-						pass # Morn patlamadan sağ çıktı / dirildi!
+						pass
 					else:
 						handle_player_defeat()
-						break # Savaş bitti, döngüden çık
+						break
 						
 				update_ui()
 				await get_tree().create_timer(1.5).timeout
@@ -245,14 +245,14 @@ func start_battle_loop():
 		
 		await execute_enemy_turn()
 		
-		# --- OYUNCU ÖLÜM KONTROLÜ ---
+
 		if current_player_hp <= 0:
 			if check_resurrection("player", player_active_effects, player_data.max_health):
-				pass # Dirildik, savaşa devam!
+				pass
 			else:
 				handle_player_defeat()
 				PopupManager.show_message("You died...", Color.DARK_RED)
-				break # Yenildik
+				break
 				
 		await get_tree().create_timer(0.8).timeout
 
@@ -277,7 +277,7 @@ func add_effect_to_enemy(new_effect: StatusEffect):
 				add_log("Enemy is affected by [color=yellow]%s![/color]" % new_effect.name)
 		
 		StatusEffect.StackBehavior.REFRESH:
-			# Blind gibi: aynı isimde biri varsa sadece süreyi yenile
+
 			var found = false
 			for existing in enemy_active_effects:
 				if existing.name == new_effect.name:
@@ -323,22 +323,93 @@ func add_effect_to_player(new_effect: StatusEffect):
 				player_active_effects.append(new_effect)
 				add_log("Morn is affected by [color=yellow]%s![/color]" % new_effect.name)
 
+
+func spawn_floating_text(amount: int, target_node: Control, is_player_hit: bool):
+	var float_label = Label.new()
+	float_label.text = str(amount)
+	
+
+	if is_player_hit:
+		float_label.modulate = Color.RED
+	else:
+		float_label.modulate = Color.ORANGE
+		
+
+	float_label.add_theme_font_size_override("font_size", 32)
+	float_label.add_theme_constant_override("outline_size", 4)
+	float_label.add_theme_color_override("font_outline_color", Color(0, 0, 0, 1))
+	
+
+	target_node.add_child(float_label)
+	float_label.position = Vector2(target_node.size.x / 2 - 20, target_node.size.y / 2)
+	
+
+	var tween = create_tween()
+
+	tween.set_parallel(true)
+	
+
+	tween.tween_property(float_label, "position:y", float_label.position.y - 120, 0.6).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+	
+
+	tween.tween_property(float_label, "modulate:a", 0.0, 0.6).set_delay(0.2)
+	
+
+	tween.set_parallel(false)
+	tween.tween_callback(float_label.queue_free)
+
+func hit_shake(target_node: Control):
+	var original_pos = target_node.position
+	var tween = create_tween()
+	
+
+	tween.tween_property(target_node, "position:x", original_pos.x + 15, 0.05)
+	tween.tween_property(target_node, "position:x", original_pos.x - 15, 0.05)
+	tween.tween_property(target_node, "position:x", original_pos.x + 10, 0.05)
+	tween.tween_property(target_node, "position:x", original_pos.x - 10, 0.05)
+
+	tween.tween_property(target_node, "position", original_pos, 0.05)
+
+func screen_shake(intensity: float = 20.0, duration: float = 0.3):
+	var original_pos = self.position
+	var tween = create_tween()
+	
+
+	tween.tween_property(self, "position", original_pos + Vector2(randf_range(-intensity, intensity), randf_range(-intensity, intensity)), duration / 4.0)
+	tween.tween_property(self, "position", original_pos + Vector2(randf_range(-intensity, intensity), randf_range(-intensity, intensity)), duration / 4.0)
+	tween.tween_property(self, "position", original_pos + Vector2(randf_range(-intensity/2, intensity/2), randf_range(-intensity/2, intensity/2)), duration / 4.0)
+	
+
+	tween.tween_property(self, "position", original_pos, duration / 4.0)
+
 func execute_player_turn():
 	add_log("\n[color=blue]%s[/color] attacks!" % player_data.card_name)
 
-	# --- 1. Durak: Saldırı öncesi buff/debufflar ---
+
 	var first_damage = apply_pre_attack_buffs(player_data.attack_damage, player_active_effects, enemy_active_effects) 
 	var final_damage = int(round(first_damage * (1.0 + GameManager.talent_damage_modifier / 100.0)))
 
-	# --- 2. Durak: Blind ve Leech kontrolü ---
+
 	var hit_data = check_blind_and_leech(player_active_effects, player_data.card_name, final_damage)
 	
 	if hit_data["is_hit"]:
 		current_enemy_hp -= final_damage
 		active_enemy_card.update_health_ui(current_enemy_hp)
+		
+
+		spawn_floating_text(final_damage, active_enemy_card, false)
+		hit_shake(active_enemy_card)
+		
+
+		if final_damage > 100 or enemy_data.rarity == CardData.Rarity.MYTHIC:
+			screen_shake(30.0, 0.4)
+		else:
+			screen_shake(10.0, 0.2)
+
+		
 		add_log("You dealt [color=orange]%d[/color] damage!" % final_damage)
 
-		# Can çalma varsa
+
 		if hit_data["heal_amount"] > 0:
 			current_player_hp += hit_data["heal_amount"]
 			current_player_hp = clamp(current_player_hp, 0, player_data.max_health)
@@ -350,7 +421,7 @@ func execute_player_turn():
 
 	await get_tree().create_timer(0.8).timeout
 
-	# --- 3. Durak: Tur sonu efektleri (SADECE OYUNCU İÇİN) ---
+
 	current_player_hp = process_turn_end_effects(current_player_hp, player_active_effects, player_data.card_name)
 	
 	active_player_card.update_health_ui(current_player_hp)
@@ -358,33 +429,45 @@ func execute_player_turn():
 func execute_enemy_turn():
 	add_log("\n[color=red]%s[/color] attacks!" % enemy_data.card_name)
 
-	# --- 1. Durak: Saldırı öncesi buff/debufflar ---
-	# DİKKAT: Saldıran düşman olduğu için enemy_active_effects ilk yazılır!
+
+
 	var first_damage = apply_pre_attack_buffs(enemy_data.attack_damage, enemy_active_effects, player_active_effects)
 	var defense_multiplier = 1.0 - (GameManager.talent_defense_modifier / 100.0)
 	var final_damage = int(round(first_damage * defense_multiplier))
 
-	# --- 2. Durak: Blind ve Leech kontrolü ---
+
 	var hit_data = check_blind_and_leech(enemy_active_effects, enemy_data.card_name, final_damage)
 	
 	if hit_data["is_hit"]:
 		current_player_hp -= final_damage
 		active_player_card.update_health_ui(current_player_hp)
+
+
+		spawn_floating_text(final_damage, active_player_card, false)
+		hit_shake(active_player_card)
+		
+
+		if final_damage > 100 or enemy_data.rarity == CardData.Rarity.MYTHIC:
+			screen_shake(30.0, 0.4)
+		else:
+			screen_shake(10.0, 0.2)
+
+		
 		add_log("Enemy dealt [color=orange]%d[/color] damage!" % final_damage)
 
-		# Düşmanda Can çalma varsa (Vampire)
+
 		if hit_data["heal_amount"] > 0:
 			current_enemy_hp += hit_data["heal_amount"]
 			current_enemy_hp = clamp(current_enemy_hp, 0, enemy_data.max_health)
 			active_enemy_card.update_health_ui(current_enemy_hp)
 			add_log("🩸 Leech healed enemy for [color=green]%d[/color] HP!" % hit_data["heal_amount"])
 
-		# --- Düşman Vurursa Bize Hastalık (On-Hit) Bulaştırsın ---
+
 		for effect in enemy_data.on_hit_effects:
 			add_effect_to_player(effect.duplicate())
 
-	# --- 3. Durak: Tur sonu efektleri (SADECE DÜŞMAN İÇİN) ---
-	# İşte düşmanın ZEHİR veya YANMA hasarını tam burada yiyecek!
+
+
 	current_enemy_hp = process_turn_end_effects(current_enemy_hp, enemy_active_effects, enemy_data.card_name)
 	active_enemy_card.update_health_ui(current_enemy_hp)
 
@@ -409,21 +492,21 @@ func apply_pre_attack_buffs(base_damage: int, attacker_effects: Array, defender_
 func process_turn_end_effects(target_hp: int, active_effects: Array[StatusEffect], target_name: String) -> int:
 	var current_hp = target_hp
 	
-	# DİKKAT: Listeden eleman silerken çökmemesi için diziyi tersten (sondan başa) tarıyoruz!
+
 	for i in range(active_effects.size() - 1, -1, -1):
 		var effect = active_effects[i]
 		
-		# 1. Efektin özelliğini uygula (Zehir, Yanma vs.)
+
 		match effect.effect_type:
 			StatusEffect.Type.BURN, StatusEffect.Type.POISON:
 				current_hp -= effect.power
 				add_log("%s takes [color=orange]%d[/color] %s damage!" % [target_name, effect.power, effect.name])
 				
-		# 2. Efektin süresini 1 tur azalt
+
 		if effect.duration < 999:
 			effect.duration -= 1
 		
-		# 3. Eğer süresi bittiyse (0 veya altındaysa) onu sahneden sil
+
 		if effect.duration <= 0:
 			active_effects.remove_at(i)
 			add_log("⏳ [color=gray]The effect of %s on %s has worn off.[/color]" % [effect.name, target_name])
@@ -465,12 +548,12 @@ func update_equipped_abilities_ui():
 		if ability_card.card_texture != null:
 			icon_rect.texture = ability_card.card_texture
 		else:
-			# Henüz ikon çizmediysen, kutunun içini geçici bir dokuyla doldur!
-			# Böylece oyunu test ederken orada olduklarını görebilirsin.
+
+
 			var placeholder = PlaceholderTexture2D.new()
 			placeholder.size = Vector2(48, 48)
 			icon_rect.texture = placeholder
-			icon_rect.modulate = Color(0.8, 0.2, 0.2) # Şık, koyu kırmızı bir kutu
+			icon_rect.modulate = Color(0.8, 0.2, 0.2)
 
 
 		container.add_child(icon_rect)
@@ -491,7 +574,7 @@ func check_resurrection(target: String, active_effects: Array[StatusEffect], max
 				active_enemy_card.update_health_ui(current_enemy_hp)
 				add_log("💀 The enemy defies death! RESURRECTED with [color=green]%d[/color] HP!" % heal_amount)
 			
-			active_effects.remove_at(i) # Mucize bir kere gerçekleşir, listeden siliyoruz.
+			active_effects.remove_at(i)
 			return true
 	return false
 
@@ -514,7 +597,7 @@ func handle_player_defeat():
 	add_log("\n[color=red]Defeat...[/color]")
 	add_log("[color=yellow]Morn refuses to yield. Re-engaging from Stage %d, Enemy 1.[/color]" % GameManager.current_stage)
 	
-	# Artık stage = 1 yapmıyoruz! Sadece o stage'in başına (0. düşmana) dönüyoruz.
+
 	GameManager.defeated_enemies_on_current_stage = 0
 	
 	current_player_hp = player_data.max_health

@@ -1,6 +1,7 @@
 [gd_resource type="Resource" script_class="TalentResource" format=3 uid="uid://dw4gxawgeefpj"]
 
 [ext_resource type="Script" uid="uid://v20cujdoe4pd" path="res://talent_resource.gd" id="1_57mt2"]
+[ext_resource type="Texture2D" uid="uid://cjp3hlnu1oke4" path="res://Textures/AbilityCardTextures/muscle-up.svg" id="2_ejniv"]
 [ext_resource type="Resource" uid="uid://b0dnmjiwjtxf6" path="res://Talents/fortune.tres" id="3_kfh0u"]
 [ext_resource type="Resource" uid="uid://bbc0w3btqyvhi" path="res://Talents/berserk.tres" id="4_ejniv"]
 
@@ -8,6 +9,7 @@
 script = ExtResource("1_57mt2")
 id = "0001"
 talent_name = "Perserverance"
+talent_icon = ExtResource("2_ejniv")
 type = 1
 effect_value = 2.0
 cost = 10

@@ -8,7 +8,7 @@ signal slot_clicked(card_data: ResourceCardData)
 
 var current_card_data: ResourceCardData
 
-#data driven ui
+
 func render_slot(data: ResourceCardData):
 	current_card_data = data
 	icon.texture = data.card_texture

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ghy0pniysv4f" path="res://Scripts/status_effect.gd" id="1_e3fss"]
 [ext_resource type="Script" uid="uid://dieialnq8mc0f" path="res://Scripts/card_data.gd" id="1_n5a1c"]
-[ext_resource type="Texture2D" uid="uid://bkkh0ef6pd8nm" path="res://Textures/AbilityCardTextures/shambling-zombie.svg" id="1_vnkft"]
+[ext_resource type="Texture2D" uid="uid://crf3hvi38hyo6" path="res://Textures/AbilityCardTextures/cultist.svg" id="1_vnkft"]
 
 [resource]
 script = ExtResource("1_n5a1c")

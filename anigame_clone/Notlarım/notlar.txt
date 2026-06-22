@@ -1,8 +1,8 @@
 Her şeyden önce renklerle başlamak istiyorum:
 
-#1a0a00
-#8b4513
-#ffd700
+
+
+
 
 Oyunumun temel renkleri.
 

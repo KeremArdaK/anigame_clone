@@ -13,7 +13,6 @@ config_version=5
 config/name="Anigame Clone"
 run/main_scene="uid://d1yko6hrcyigs"
 config/features=PackedStringArray("4.6", "GL Compatibility")
-config/icon="res://icon.svg"
 
 [autoload]
 

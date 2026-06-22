@@ -1,15 +1,15 @@
 extends Resource
 class_name CardData
 
-#--Enum'lar--
+
 enum AttackType {NONE, FIRE, WATER, EARTH, AIR} 
 enum Rarity {COMMON, RARE, LEGENDARY, MYTHIC}
 
-#pasif listeleri
-#--Kendine Faydası Olanlar--
+
+
 @export var innate_effects: Array[StatusEffect] = []
 
-#--Rakibe Zarar Verenler--
+
 @export var on_hit_effects: Array[StatusEffect] = []
 
 

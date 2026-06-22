@@ -21,7 +21,7 @@ func _ready():
 	equip_button.pressed.connect(_on_equip_button_pressed)
 	close_button.pressed.connect(_on_close_button_pressed)
 	
-	# Sinyali bağlıyoruz
+
 	InventoryManager.inventory_updated.connect(_on_inventory_updated)
 
 	if InventoryManager.owned_ability_cards.is_empty():
@@ -30,9 +30,9 @@ func _ready():
 	refresh_inventory_view()
 	
 func _on_inventory_updated():
-	# GEÇMİŞİN HAYALETLERİNİ KOV:
-	# Envanter değiştiğinde (silindiğinde veya yeni kart eklendiğinde)
-	# eski karta ait açık kalmış detay penceresini ve hafızasını zorla temizliyoruz!
+
+
+
 	tooltip_panel.hide()
 	currently_viewed_card = null
 	
@@ -50,13 +50,13 @@ func refresh_inventory_view():
 		card_grid.remove_child(child)
 		child.queue_free()
 
-	# 3. YENİ KARTLARI ÇİZ
+
 	for card_data in filtered_pool:
 		var slot_instance = SLOT_SCENE.instantiate()
 		card_grid.add_child(slot_instance)
 		slot_instance.render_slot(card_data)
 		
-		# Daha temiz bir sinyal bağlantı yapısı
+
 		if not slot_instance.slot_clicked.is_connected(_on_card_slot_clicked):
 			slot_instance.slot_clicked.connect(_on_card_slot_clicked)
 
@@ -90,12 +90,12 @@ func _on_equip_button_pressed():
 			equip_button.text = "Unequip"
 		else:
 			print("Slotlar Dolu!")
-			# Buraya dilersen PopupManager.show_message("Equip slots are full!", Color.RED) ekleyebilirsin.
+
 
 func _on_close_button_pressed():
 	tooltip_panel.hide()
 	currently_viewed_card = null
 
 func _on_search_text_changed(_new_text: String):
-	# Ayrı bir logic yazmaya gerek yok, arama metni değişince doğrudan ekranı yenile
+
 	refresh_inventory_view()

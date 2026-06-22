@@ -1,13 +1,13 @@
 [gd_resource type="Resource" script_class="TalentResource" format=3 uid="uid://b0dnmjiwjtxf6"]
 
 [ext_resource type="Script" uid="uid://v20cujdoe4pd" path="res://talent_resource.gd" id="1_m1nms"]
-[ext_resource type="Texture2D" uid="uid://bd3rqvhnm1pap" path="res://icon.svg" id="2_s5376"]
+[ext_resource type="Texture2D" uid="uid://bpihy1eq0gwb1" path="res://Textures/AbilityCardTextures/coins.svg" id="2_m1nms"]
 
 [resource]
 script = ExtResource("1_m1nms")
 id = "0002"
 talent_name = "Fortune"
-talent_icon = ExtResource("2_s5376")
+talent_icon = ExtResource("2_m1nms")
 effect_value = 5.0
 cost = 10
 metadata/_custom_type_script = "uid://v20cujdoe4pd"

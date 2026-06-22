@@ -28,43 +28,43 @@ func _ready():
 	buy_button.pressed.connect(_on_buy_button_pressed)
 
 func _on_buy_button_pressed():
-	#birinci aşama kontrol
+
 	if CurrencyManager.card_shards < PACK_PRICE:
-		#result_label.text = "Not enough shards! You need %d." % PACK_PRICE
+
 		return
 
-	#iknici aşama ödeme
+
 	CurrencyManager.spend_shards(PACK_PRICE)
 
-	#üçüncü aşama RNG
+
 	var drop_count = randi_range(1, 3)
 	var pulled_card_names: Array[String] = []
 
-	#dördüncü aşama, çekiliş
+
 	for i in range(drop_count):
-		# 1. 0.0 ile 100.0 arasında devasa, küsuratlı bir zar at
+
 		var roll = randf_range(0.0, 100.0)
 		var target_rarity: CardData.Rarity
 		
-		# 2. Zarın düştüğü dilimi bul
+
 		if roll <= 60.0:
-			target_rarity = CardData.Rarity.COMMON     # %60 ihtimal (0 - 60 arası)
+			target_rarity = CardData.Rarity.COMMON
 		elif roll <= 94.9:
-			target_rarity = CardData.Rarity.RARE       # %34.9 ihtimal (60.1 - 94.9 arası)
+			target_rarity = CardData.Rarity.RARE
 		elif roll <= 99.9:
-			target_rarity = CardData.Rarity.LEGENDARY  # %5 ihtimal (95.0 - 99.9 arası)
+			target_rarity = CardData.Rarity.LEGENDARY
 		else:
-			target_rarity = CardData.Rarity.MYTHIC     # %0.1 ihtimal (99.9 - 100 arası)
+			target_rarity = CardData.Rarity.MYTHIC
 			
-		# 3. Tüm market havuzunu sadece o nadirlikteki kartları içerecek şekilde süz
+
 		var possible_cards = shop_card_pool.filter(func(card): return card.rarity == target_rarity)
 		
-		# o nadirlikte bir kart yoksa
+
 		if possible_cards.is_empty():
 		
 			possible_cards = shop_card_pool.filter(func(card): return card.rarity == CardData.Rarity.COMMON)
 			
-		# 4. Seçilen nadirlik havuzundan rastgele bir kart çek!
+
 		var random_index = randi() % possible_cards.size()
 		var pulled_card = possible_cards[random_index]
 
@@ -77,5 +77,5 @@ func _on_buy_button_pressed():
 			pulled_card_names.append(pulled_card.card_name)
 			InventoryManager.inventory_updated.emit()
 	
-	#result_label.text = "Pack Opened! You got: " + ", ".join(pulled_card_names)
+
 	PopupManager.show_message("Pack Opened! You got:" + ", ".join(pulled_card_names), Color.ALICE_BLUE)
